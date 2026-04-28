@@ -1,0 +1,158 @@
+---
+title: "了解HTML tag&semantic tag及Block element and inline element"
+sidebar_title: "了解HTML tag&semantic tag及Block element and inline elements"
+tags: [HTML tag, Block element, inline elements]
+---
+
+
+我們要了解HTML tag&semantic tag及Block element and inline element的意思。
+
+## HTML tag(HTML標籤):
+
+由 < > 包起來的語法，用來告訴瀏覽器「這段內容是什麼」或「要怎麼顯示」。
+
+以下常見的HTML tag的標籤:
+
+### 文本
+```HTML
+<h1>～<h6>  //標題（最大到最小）
+<p>  //段落
+<a>  //連結
+<span>  //行內內容
+<strong>  //粗體（語意上重要）
+<em>  //斜體（語意強調）
+```
+
+### 多媒體
+```HTML
+<img>  //圖片
+<video>  //影片
+<audio>  //音訊
+<canvas>  //繪圖區域
+```
+
+### 表單
+```HTML
+<form>  //表單
+<input>  //輸入欄位
+<select>  //下拉式選單
+<textarea>  //多行文字框
+<button>  //按鈕
+```
+
+### 表格
+```HTML
+<table>  //表格
+<tr>  //表格列
+<td>  //表格儲存格
+<th>  //表格標題欄位
+```
+
+### Void Elements(空元素)
+```HTML
+<br>  //換行
+<img>  //圖片
+<hr>  //分隔線
+<input>  //表單輸入
+```
+
+### semantic tag(語意化標籤)
+
+指帶有語意（meaning） 的 HTML 標籤，能清楚告訴瀏覽器、搜尋引擎、以及開發者「這段內容的用途是什麼」。
+
+以下是常用的semantic tag的標籤:
+
+```HTML
+<header>  //頁首、標題區​
+<nav>   //導覽列（導航區）
+<main>  //主要內容
+<section>  //與內容相關的獨立區塊，放章節、介紹、訊息
+<article>  //放一篇獨立於上下文的文章內容（文章、貼文）
+<mark>  //放被標記或被強調的文字
+<details>  // 定義額外的細節、資訊，讓使用者可以觀看或隱藏
+​<summary> //為<detail>//定義一個可見的標題、摘要
+<aside>  //側邊欄（相關資訊）
+<footer>  //頁尾、結尾、作者版權資訊
+<time>   //時間日期
+<figure>  //完整內容的圖片＋照片標題+說明
+<figcaption>  //定義圖片的註解
+```
+
+
+
+### Block element(區塊元素)
+
+會獨佔一整行、會自動換行顯示的元素，上下跟裡面也可以放：其他 block 元素、inline 元素、也可以設定:width、height、margin:top、bottom、left 、right、padding 上下左右。
+
+以下常用的元素:
+
+```HTML
+<div>  //最常見的區塊容器，無語意
+<p>  //段落文字
+<h1>～<h6>  //標題（字體由大到小）
+<header>  //頁首區域
+<footer>  //頁尾區域
+<nav>  //導覽列（menu）
+<main>  //主內容區
+<section>  //章節/區塊
+<article>  //一篇獨立內容（文章、貼文）
+<aside>  //側邊欄（相關資訊）
+<form>  //表單區塊
+<ul>  //無序清單（項目符號）
+<ol>  //有序清單（編號）
+<li>  //清單項目
+<table>  //表格
+<thead>  //表格的表頭區
+<tbody>  //表格的內容區
+<tfoot>  //表格的結尾區
+<tr>  //表格的列
+<blockquote>  //大段引用文字
+<figure>  //圖片＋文字的獨立區塊
+<hr>  //水平線
+<address>  //聯絡資訊區塊
+```
+
+### inline element(行內元素)
+
+不換行、寬度由內容決定、用來修飾文字或小元素，不可以設定width、height，但是可以設置padding 上下左右及margin-left / margin-right。
+
+以下常用的元素:
+
+```HTML
+<span>  //行內容器（無語意，用來包字）
+<a>  //超連結
+<strong>  //強調（語意上的重要 → 粗體）
+<em>  //強調（語氣重點 → 斜體）
+<b>  //粗體（無語意）
+<i>  //斜體（無語意）
+<u>  //底線
+<small>  //小字
+<label>  //表單欄位說明（Label for Input）
+<img>  //圖片（特例：inline 但像小塊盒子）
+<input>  //表單輸入欄位（也是特例）
+<textarea>  //多行輸入框（inline-block 行為）
+<select>  //下拉選單（inline-block 行為）
+<button>  //按鈕（inline-block 行為）
+<code>  //程式碼文字
+<kbd>  //鍵盤按鍵顯示
+<abbr>  //縮寫說明
+<cite>  //作品引用
+<q>  //行內短引用
+<br>  //換行（空元素）
+<sub>  //下標（H₂O → ₂）
+<sup>  //上標（2⁵ → ⁵）
+<time>  //時間/日期語意
+```
+
+## 總結inline element跟Block element的差別
+
+Block Element（區塊元素）:Block element 永遠都會新的一行開始，並不會接在前一個元素的屁股後面， 寬度會呈現滿版狀態。
+
+可以使用 padding，margin 的 left，right 皆能手動設置。
+可以使用width、height
+元素寬度在不設置的情況下，是它本身父容器的100%（和父元素的寬度一致），除非設定一個寬度。
+inline element(行內元素):只會依照元素的內容決定內容的高和寬，並且和其他元素排成一排，只佔有必要的寬和高。
+
+元素的寬高皆不能手動設置，大小由內容決定。
+可以使用 padding，margin 的 left，right 產生間隔效果。
+不可以使用width、height("因為inline element排版方式像是文字排版，所以無法用height、width改高度跟寬度)

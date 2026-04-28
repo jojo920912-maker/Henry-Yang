@@ -1,0 +1,119 @@
+---
+title: "開始建構環境"
+sidebar_title: "開始建構環境"
+tags: [building the environment]
+---
+
+## 提要
+
+首先我們需要先建構環境之前，那我們需要先去安裝nvm。
+
+至於nvm是什麼，nvm全名"Node Version Manager"，是一款專門用來管理node.js版本的工具，他可以協助你安裝、切換、管理不同版本的Node.js
+
+
+
+## 安裝nvm
+
+接著開啟終端機，按照下列步驟做:
+
+(也可直接搜尋power shell，很重要因為接下來他會伴隨著我們每一個路程)
+
+```
+// 用來確認nvm是否確實安裝
+nvm version
+
+//查看nvm上有那些版本的Node.js可以進行安裝
+nvm list available
+
+//安裝你想要的Node.js的版本，例如:目前我安裝的22.21.1
+nvm install 22.21.1
+
+//如果有其他版本的Node.js，享用其他版本的，可以輸入
+nvm use 22.21.1
+
+//用來查看Node.js是否正確被安裝
+node -v
+```
+
+## 安裝Git
+
+我一樣開啟終端機進行以下步驟:
+
+```
+//​下載完之後可以用這個只來確認是否安裝成功。
+git --version
+
+//​接著需要用指令設定使用者名稱與電子郵件:
+git config --global user.name "XXXX"
+git config --global user.email XXXXX@example.com
+git config --list # 確認設定資訊
+```
+(這邊名稱跟電子郵件可以自己設定)
+
+接著要開啟VScode裡面的TERMINAL 輸入以下程式:
+```
+git init​  //建立本地儲存庫
+```
+之後等待檔案更新，就把檔案丟進暫存區。
+```
+git add .  //"."代表把所有檔案
+```
+再來再把檔案提交到本地儲存庫裡面:
+```
+git commit -m "Your commit message"  //""裡面可以輸入你要稱呼的名稱
+```
+之後儲存庫建好了之後，就可以輸入以下指令:
+```
+git remote add origin https://github.com/{user-name}/{repo-name}.git
+
+git branch -M main
+
+git push -u origin main
+```
+只要輸入好以上指令後，之後有程式碼有變動，要退到遠端儲存庫之後，只需要輸入git push即可。
+
+
+## 安裝VScode【Visual Studio Code】
+
+接著我們可以在VScode上安裝一些插件協助處理作業:
+```
+//​把 VScode 變中文。
+Chinese (Traditional) Language Pack for Visual Studio Code
+
+//​一鍵執行程式碼。
+Code Runner
+
+//​自動完成 npm 套件引入。
+npm Intellisense
+
+//檢查拼字錯誤。
+​Code Spell Checker
+
+//實時預覽功能。
+​Live Preview
+
+//捕捉並顯示程式碼中的空格。
+​Trailing Spaces
+
+//​讓註解變得鮮明易於辨識。
+TODO Highlight
+
+//為專案中的檔案加上鮮明的圖示。
+​Material Icon Theme
+
+//​可以在 VScode 中看到 git flow。
+Git Graph
+
+//​可以快速幫助修改 HTML tag。
+Auto Rename Tag
+
+//​在寫 CSS 的色碼時可以直接看到顏色。
+Color Highlight
+```
+
+## 安裝Visual Studio Community 2022
+
+(其他版本也是可以，但是Community是免費版，其他要付費)
+
+完成以上操作就算基本完成環境設置。
+

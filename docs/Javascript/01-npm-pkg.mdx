@@ -1,0 +1,124 @@
+---
+title: "了解npm、package、axios"
+sidebar_title: "了解npm、package、axios"
+tags: [npm, axios, package]
+---
+
+
+## npm
+
+npm是一個 Node.js 預設的 JavaScript 套件管理工具，它幫助開發者下載、安裝、管理和分享專案所需的程式碼套件，也可想像成JavaScript 的「套件管理員」。
+
+主要在做:
+
+
+安裝套件（例如 axios、react…）
+管理版本（你裝的是哪一版、依賴哪些東西）
+執行專案指令（例如 npm run dev、npm test）
+
+```
+npm install <package-name>  //安裝套件，package-name'套件名稱'。
+npm install   //根據 package.json 安裝所有依賴。
+npm start   //執行 package.json 中定義的 start 腳本。 
+
+npm init -y         //建立 package.json（初始化專案）
+npm install axios   //安裝 axios
+npm install         //依照 package.json 安裝全部依賴
+npm run dev         //跑 package.json 裡 scripts 的 dev
+```
+
+
+
+
+## package
+
+package就是「別人寫好的功能集合」，你裝進來就能直接用。
+
+一個package = 一個資料夾 + 一套功能 + 說明文件 + 版本號。
+
+
+```
+npm install <package-name>  //安裝套件，package-name'套件名稱'。
+```
+
+
+
+## axios
+
+axios是個很常用的 HTTP 請求套件，用來讓前端（或 Node.js）去跟後端 API 溝通：抓資料、送資料、更新資料、刪資料。
+
+而axios 最常用:
+
+GET：拿資料（讀）
+POST：送資料（新增）
+PUT / PATCH：更新資料
+DELETE：刪資料
+安裝方法:
+
+```js
+npm install axios  //使用npm
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+//​引入cdn
+```
+
+### axios請求方法:
+
+```js
+axios.get('https://example.com') // 放入要發出get請求網址 
+
+.then(function (response) { 
+// 當請求成功時 
+
+console.log(response); 
+}) 
+
+.catch(function (error) {
+ // 請求失敗時 
+ 
+console.log(error); 
+}) 
+
+.then(function () { 
+// 總是執行 
+});
+
+```
+
+有參數:
+
+```
+axios.get('https://example.com', {  
+params: {
+ ID: 123 
+ } 
+ })  // 幫你組合成https://example.com?ID=123
+ 
+ .then(function (response) {  // 當請求成功時
+ console.log(response); 
+ })
+ 
+ .catch(function (error) {  // 請求失敗時
+ console.log(error); 
+ })
+ 
+ .then(function () {  // 總是執行
+ });
+```
+
+axios post方法
+使用post請求，傳送name和eamil資料
+
+```
+axios.post('/signup', { 
+name: 'Joe', 
+email: 'joe94113@gmail.com' 
+})
+.then(function (response) { 
+console.log(response); 
+})
+.catch(function (error) { 
+console.log(error); 
+});
+```
+

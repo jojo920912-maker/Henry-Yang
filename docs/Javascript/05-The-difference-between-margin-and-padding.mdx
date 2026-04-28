@@ -1,0 +1,140 @@
+---
+title: "margin&padding的差異"
+sidebar_title: "margin&padding的差異"
+tags: [margin, padding]
+---
+
+## 介紹margin&padding
+
+首先我們先聊聊 margin&padding 的差異之前，我們先可以先聊聊元素的外框
+
+
+
+
+
+
+HTML裡的一個元素外面都有所謂的外框，依次分為 margin、border、padding。而他們各自述職的位置對應不同的外邊界(ex:margin "方向分為上、右、下、左")
+
+## margin
+
+我們先聊聊 margin，所謂的 margin 就是包住一個文字的外面的最外框那個就是 margin
+
+例如:
+```html
+<!doctype html>
+
+<html lang="en-US">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width" />
+
+    <link href="test.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+    <div>
+
+        <p class="test1">I am jojo</p>
+
+    </div>
+
+</body>
+
+</html>
+```
+
+```css
+.test1{
+
+    margin-top: 20px;
+
+    margin-bottom: 15px;
+
+    margin-left: 25px;
+
+    margin-right: 10px;
+
+}
+
+```
+結果:
+
+
+
+
+會發現說文字距離邊界很大段距離，這個就是margin。
+
+
+
+
+## padding
+再來我們來聊聊padding，padding就是如圖所述那樣，是在元素與邊框(border)之間的內距。
+
+就是padding。
+
+
+
+
+例如:
+```html
+<!doctype html>
+
+<html lang="en-US">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width" />
+
+    <link href="test.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+    <div>
+
+        <p class="test1">I am jojo</p>
+
+    </div>
+
+</body>
+
+</html>
+```
+
+```css
+.test1{
+
+    padding-top: 20px;
+
+    padding-right: 15px;
+
+    padding-left: 10px;
+
+    padding-bottom: 25px;
+
+    margin-top: 10px;
+
+    margin-left: 200px;
+
+    margin-right: 200px;
+
+    margin-bottom: 10px;
+
+    border: 8px solid red;
+
+}
+```
+結果會呈現如下圖:
+
+
+
+
+會呈現像是文字與紅色外框(border)的之間那個就是padding。

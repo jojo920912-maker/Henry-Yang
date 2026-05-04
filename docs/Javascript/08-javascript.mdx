@@ -1,0 +1,192 @@
+---
+title: "認識 javascript 裡 var、const、let 的差異"
+sidebar_title: "認識 javascript 裡var、const、let的差異"
+tags: [javascript, const, let, var]
+---
+
+## Var
+
+`var` 的作用域是屬於"函式作用域 `(Function Scope)` 意思是當我們在一個函數內部用 `var` 宣告變數時，變數只在該函數內部可見，是可以被重複宣告的。
+這是使用在變數可能或不會被重新賦予值，或者宣告範圍在整個函式 `function` 或者區塊 `block` 中，但是跟 `let` 相比之下，比較不嚴僅，如果後面程式碼一多可能會導致程式碼難以維護。
+
+例子:
+```javascript
+if(true){
+var a = "ccccc"
+}
+console.log(a) // 輸出 ccccc
+```
+
+
+我們透過上述程式碼的範例中，可以看到即便 `var` 變數是在 `if` 裡面的區塊被宣告的，但是他仍然可以在區塊外部看見。因為 `var` 沒有所謂的"區塊作用域"。
+
+
+
+`var`可以重複宣告:
+
+```javascript
+var a = "apple"
+var a = "banana"
+console.log(a) // 輸出 banana
+
+let b = "111"
+let b = "222"
+console.log(b) // 系統報錯，因為 let 不能被重複宣告
+```
+
+
+這樣執行出來之後就會說，因為 `var` 允許重複宣告同一個變數，後面的值會蓋掉前面的，所以輸出 `banana`。
+但 `let` 不允許重複宣告，系統會直接報錯。
+
+
+
+但是我們把 `let` 拿掉:
+
+```javascript
+var a = "apple"
+var a = "banana"
+
+console.log(a) // 輸出 banana
+```
+
+
+去執行的結果，會發現系統出現 `banana`，代表 `var` 可以重複宣告，也可以重複賦予值。
+
+
+
+還有一個 `var` 在程式會出現一個很重要的行為: `"宣告會被提升到作用域頂部，但賦值不會提升。"`
+
+也就說程式執行前的編譯階段，會先把所有的 `var` 宣告找出來，並且提升到作用域的最上層 `(即便程式肉眼上沒有更改，可是系統上會自動做，是肉眼查看不到的)`
+
+而「變數的值」不會一起提升，只會只有 `var` 被提升而已。而預設值是 `undefined`。
+
+`function` 外就存取不到變數:
+
+```javascript
+console.log(a)
+
+var a = 10 // 輸出 undefined
+```
+
+
+
+這樣撰寫，等於這樣子
+```javascript
+var a
+
+console.log(a)
+
+a = 10
+```
+這邊不會噴錯，因為變數`「宣告」`已經存在。
+
+但是改成 `let` 或者 `const` ，就會噴錯了
+
+```javascript
+console.log(a)
+
+let a = 5
+```
+
+
+
+
+而 `var` 的作用域規則 `=` 宣告所在的 `function`，但它不會被 `if、for、while` 的 `{}` 限制。
+
+範例:
+
+```javascript
+if (true) {
+  var x = 123
+}
+console.log(x) // 123
+```
+
+
+但是換成 `let/const` 就會噴錯:
+
+```javascript
+if (true) {
+  let y = 456;
+}
+console.log(y) // ERROR
+```
+
+如果用 `Function`:
+
+```javascript
+function test() {
+  var a = 10
+}
+
+console.log(a) // 系統報錯
+```
+因為 `var` 在 `function` 裡面宣告，出了 `function` 就消失，所以外面的 `console.log(a)` 會報錯。所以只有 `function` 能限制 `var` 的範圍。
+
+那如果使用 `{}` 來做 `var`
+
+```javascript
+{
+  var z = 999
+}
+console.log(z) // 輸出999
+```
+
+因為 `var` 的特性是只有 `function` 能限制它的範圍，普通的 `{}` 擋不住它，所以外面還是能存取到 `z`。所以執行出來的結果 `{}` 也無法擋住 `var`。
+
+
+
+## Let
+
+`let` 的作用是屬於"區塊作用域(Block Scope)"，宣告的方式跟 `var` 差不多，但是 `let` 不可以重複宣告，但是可以重新賦予值。
+
+範例:
+
+```javascript
+let a = 111
+
+let a = 222
+
+console.log(a) // 系統報出: a 已經被宣告了，不可以重複宣告
+```
+
+因為上述程式碼已經使用 `"let a = 111"` 了，我們後面再加上 `"let a = 222"` 的程式碼去執行，系統會給出我們 `"a已經被宣告了"` 的訊息。
+
+但是我們沿用上述寫法去執行:
+
+```javascript
+​let a = 111
+
+a = 222
+
+console.log(a) // 輸出222
+```
+
+執行結果會出現 `222`，因為 `"let"` 的值可以重新賦予，但是不能重複宣告。
+
+
+## Const
+
+`const` 跟 `let` 一樣都是屬於"區塊作用域(Block Scope)"，但是跟 `let` 相比起來是較為嚴謹的宣告方式，需初始化，不可重複宣告，用來宣告不變動的值。
+
+範例:
+
+```javascript
+const a = 111
+
+a = 222
+
+console.log (a) // ERROR，系統報錯誤
+```
+
+輸入上述程式碼之後，系統會跟我們報錯，因為 `const` 是不變的常數，所以重新賦予值，系統會出現不能賦值的常數錯誤。
+
+
+
+正解範例:
+
+```javascript
+const a = 111
+
+console.log (a) // 輸出111
+```

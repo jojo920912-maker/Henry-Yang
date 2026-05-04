@@ -1,0 +1,84 @@
+---
+title: "git 常用指令"
+sidebar_title: "了解 git 常用指令"
+tags: [git]
+---
+
+## 基本設定
+
+```HTML
+git init  //初始化git儲存庫​
+
+git config --global user.name   //"設定的名字"
+git config --global user.email   //"設定的Email"
+
+git config --list  //檢視 Git 設定
+
+git --version  //查看目前git的版本
+
+```
+
+## 提交變更
+
+```HTML
+git add . //一次加入所有變更檔案，"."是代表所有檔案
+
+git commit -m "訊息" //提交一次的完整變更紀錄
+
+​git commit -am "訊息"  //加入所有變更檔案並提交，"但是只能使用在被git追蹤的檔案"
+```
+
+## 查看變更
+
+```HTML
+git status  //查看目前有哪些變更​
+
+git diff  //檢視詳細的變更內容
+
+git log --oneline --graph --all
+//log查看專案的commit歷史紀錄
+//--oneline:將每個commit顯示成一行簡短版
+//--graph :在文字左邊畫出分支樹狀圖
+//--all:把所有分支的歷史紀錄顯示出來
+管理分枝(branch)
+
+git branch new-feature  //建立新分支（開發新功能時使用）
+
+git checkout new-feature  //切換到某個分支
+
+git checkout -b new-feature  //建立並切換新分支（推薦方式）
+
+git branch  //查看所有分支
+
+git branch -d new-feature  //刪除分支
+
+git branch -D new-feature  //若該分支還未合併，需強制刪除
+合併分支
+
+git switch  //切換分支or主支
+
+​git checkout  //切換分支or主支​
+
+git merge new-feature  //合併new-feature分支的變更到main分支
+
+git add .
+git commit -m "解決合併衝突" 
+//如果發生衝突（conflict），Git 會要求你手動解決，解決後再執行
+遠端儲存庫（GitHub/GitLab）
+
+git remote add origin https://github.com/yourname/repository.git
+//將專案與遠端 GitHub 連結
+
+git remote -v  //查看目前的遠端儲存庫
+
+git push -u origin main  
+//推送到 GitHub（第一次推送時需加 -u 讓 Git 記住該分支）
+
+git push  //往後只需執行
+
+git pull origin main  //從遠端抓取最新變更
+
+
+git clone https://github.com/yourname/repository.git 
+//複製遠端儲存庫（克隆專案）
+```

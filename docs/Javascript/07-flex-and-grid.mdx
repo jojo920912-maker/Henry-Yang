@@ -1,0 +1,668 @@
+---
+title: "了解flex和grid"
+sidebar_title: "了解flex和grid"
+tags: [flex, grid]
+---
+
+## flex 的意思與用法
+
+我們現在常見的flex的語法有這些
+
+```css
+display:flex //(注意：這裡如果沒設成flex，底下語法都無法使用喔!!!)
+
+flex-wrap
+
+flex-direction
+
+flex-flow  //(可以同時設定flex-direction和flex-wrap)
+
+justify-content
+
+align-item
+
+align-content
+
+align-self
+
+order
+
+flex (flex-grow、flex-shrink、flex-basis)
+第一個:display:
+
+還沒加入flex之前的樣式會是像圖片這樣，呈現縱向
+```
+
+
+
+範例完整程式碼如下:
+
+```HTML
+<!doctype html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="test.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="ttp">
+        <div class="test">I am jojo</div>
+        <div class="test1">1</div>
+        <div class="test2">2</div>
+        <div class="test3">3</div>
+        <div class="test4">4</div>
+        <div class="test5">5</div>
+    </div>
+</body>
+
+</html>
+
+<style>
+.ttp{
+    height: 300px;
+    margin: 30px;
+}
+
+.test{
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    border: 6px solid red;
+}
+
+.test1{
+    border:6px solid black;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.test2{
+    border: 6px solid brown;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+
+.test3{
+    border: 6px solid rgb(59, 119, 164);
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+
+.test4{
+    border: 6px solid rgb(143, 59, 164);
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+
+.test5{
+    border: 6px solid rgb(59, 164, 64);
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+</style>
+
+```
+
+
+### 使用 flex
+那接下來是加入flex之後的樣式
+
+程式碼:
+
+
+```HTML
+<!doctype html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="test.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="ttp">
+        <div class="test">I am jojo</div>
+        <div class="test1">1</div>
+        <div class="test2">2</div>
+        <div class="test3">3</div>
+        <div class="test4">4</div>
+        <div class="test5">5</div>
+    </div>
+
+</body>
+
+</html>
+
+<style>
+.ttp{
+    height: 300px;
+    margin: 30px;
+    display: flex;
+}
+
+.test{
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    border: 6px solid red;
+}
+
+.test1{
+    border:6px solid black;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.test2{
+    border: 6px solid brown;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+
+.test3{
+    border: 6px solid rgb(59, 119, 164);
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+
+.test4{
+    border: 6px solid rgb(143, 59, 164);
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+
+.test5{
+    border: 6px solid rgb(59, 164, 64);
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+</style>
+
+```
+
+加入之後的樣式會像圖下這樣:
+
+
+
+
+
+
+但我們加入flex之後文字就會變成橫向的
+
+
+
+
+
+
+
+
+
+
+
+###  flex-wrap
+
+我們用flex之後，會發現牠們會擠在同一列，所以我們可以加入flex-wrap，flex-wrap是用來告訴flex是否可以進行換行:
+
+
+flex-wrap的程式碼如下:
+
+```css
+nowrap  //預設
+
+wrap  //(換行)
+
+wrap-reverse  //(換行，且行順序反轉)
+```
+
+
+
+### flex-direction
+
+flex-direction決定的是內元件的「排列方向」
+
+flex-direction的程式碼如下:
+
+```css
+row //(預設值，由左至右，從上到下)
+
+row-reverse  //(排列方向和row一樣，但內元件順序會反轉)
+
+column  //(先從上到下，再由左至右)
+
+column-reverse  //(排列方向和column一樣，但內元件順序會反轉)
+```
+
+### flex-flow
+
+flex-flow是flex-direction和flex-wrap的縮寫，它可以接受兩個屬性的值，沒有前後順序之分，中間用空格隔開即可
+
+程式碼:
+
+```css
+.ttp{
+    height: 300px;
+    margin: 30px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+可以寫成:
+
+.ttp{
+    height: 300px;
+    margin: 30px;
+    display: flex;
+    flex-flow:column wrap;
+}
+```
+
+### justify-content
+
+justify-content是用來控制flex「水平對齊」的位置，也就是主軸方向。
+
+程式碼如下:
+
+```css
+flex-start  //(預設值)會從主軸的起點開始排
+
+flex-end  //主軸的「終點」開始排
+
+Center  //排在「起點」和「終點」的中間
+
+Space-around  //平均分配「元素」位置，但左右兩側的間距會較小
+
+Space-between  //平均分配「元素」位置，但左右兩側會貼齊主軸的起點、終點
+
+Space-evenly  //元素」和「左右兩側」的間距皆相同
+```
+
+### align-item
+
+和jusitfy-content的用法類似，但它是用來控制「垂直對齊」的位置，也就是交錯軸方向
+
+程式碼如下:
+
+```css
+Stretch //(預設值，要測試請記得內元素不能設定height)
+
+flex-start //從交錯軸的「起點」開始排
+
+flex-end //從交錯軸的「終點」開始排
+
+center //讓所有元素在「交叉軸」中間對齊
+
+baseline //讓所有元素的文字基線（baseline）對齊
+```
+
+### align-content
+
+align-content是用來控制flex的「行」在「水平方向」的對齊位置，但是如果想要使用align-content的話，一定要設flex-wrap:wrap，因為它是控制「行」
+
+程式碼如下:
+
+```css
+stretch //為預設值，將美行拉伸已填滿剩餘空間
+
+flex-start //從交錯軸的「起點」開始排
+
+flex-end //從交錯軸的「終點」開始排
+
+center //排在「起點」和「終點」的中間
+
+space-around //是平均分配「行」的位置，但上下兩側的間距會較小
+
+space-between //是平均分配「行」的位置，但上下兩側會貼齊交錯軸的起點、終點
+
+space-evenly //是「元素」和「上下兩側」的間距皆相同
+```
+
+### align-self
+
+align-self和align-item的功能一樣，但它是針對「單一」對象
+
+程式碼如下:
+
+```css
+Stretch //(預設值，要測試請記得內元素不能設定height)
+
+flex-start //會從交錯軸的「起點」開始排
+
+flex-end //會從交錯軸的「終點」開始排
+
+center //這會讓該元素在「交叉軸」的方向上單獨置中。
+
+baseline //會讓元素對齊「文字的底線位置
+```
+
+### order
+
+order預設值為0，它可以重新定義內元件的排列順序，順序會依照數值的大小排列
+
+
+第九個:Flex (flex-grow、flex-shrink、flex-basis)
+
+所謂的flex就是flex-grow、flex-shink、flex-basis的縮寫
+
+flex-grow:空間有剩時，這個元素要「放大多少比例」去吃掉多餘空間。
+
+
+
+flex-shink:空間不夠時，這個元素要「縮小多少比例」來配合容器。
+
+
+
+flex-basis:主軸方向上的「初始大小」。
+
+
+## 了解 grid 的用法與意思
+
+
+這邊我們要先釐清grid跟flexbox的差別，flexbox是一條軸線("就是橫排跟直排")，而grid則是「行＋列同時控制」，將容器切割成格子，會將元素擺進指定的格子或者自動排列。
+
+grid 程式碼如下:
+
+```css
+display: grid  //啟用 Grid
+
+grid-template-columns  //設定欄數（column）
+
+grid-template-rows  //設定列數（row）
+
+grid-auto-columns  //自動產生欄寬
+
+grid-auto-rows  //自動產生列高
+
+gap  //列＋欄間距
+
+column-gap  //欄間距
+
+row-gap  //列間距
+
+justify-items  //水平對齊所有格子內容
+
+align-items  //垂直對齊所有格子內容
+
+justify-content  //整個 Grid 水平方向對齊
+
+align-content  //整個 Grid 垂直方向對齊
+
+grid-auto-flow  //控制自動擺放方向
+
+fr  //等分的概念，類似 Flex 中的 flex-grow，例：1fr
+
+repeat()  //可重複某值，傳入兩個參數，次數與值，例：repeat(2, 1fr)
+
+minmax()  //可將值限定在某區間，傳入兩個參數，最小值與最大值，例：minmax(20px, auto)
+```
+
+程式碼如下:
+
+```HTML
+<!doctype html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="test2.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="a1">header</div>
+    <div class="a2">menu</div>
+    <div class="a3">content1</div>
+    <div class="a4">content2</div>
+  </div>
+</body>
+</html>
+.container {
+  display: grid;
+  grid-template-rows: 100px 300px; /*設定列數*/
+  grid-template-columns: 150px 200px; /*設定欄數*/
+}​
+.a1{
+    border: 2px solid blue;
+}
+.a2{
+    border: 2px solid rgb(255, 145, 0);
+}
+.a3{
+    border: 2px solid rgb(44, 195, 102);
+}
+.a4{
+    border: 2px solid blue;
+}​
+```
+
+結果會長成圖片這樣子
+
+
+
+
+### repeat - 重複欄位
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3,1fr); /*重複欄位*/
+}
+.a1{
+    border: 2px solid blue;
+}
+.a2{
+    border: 2px solid rgb(255, 145, 0);
+}
+.a3{
+    border: 2px solid rgb(44, 195, 102);
+}
+.a4{
+    border: 2px solid blue;
+}
+```
+
+會變成這樣:
+
+
+
+
+### grid-auto-rows - 自動產生列
+
+```css
+.container {
+  display: grid;
+  grid-auto-rows:100px; /*自動產生列*/
+}
+.a1{
+    border: 2px solid blue;
+}
+.a2{
+    border: 2px solid rgb(255, 145, 0);
+}
+.a3{
+    border: 2px solid rgb(44, 195, 102);
+}
+
+.a4{
+    border: 2px solid blue;
+}
+```
+
+會出現如附圖這樣:
+
+
+
+
+### grid-auto-columns - 自動產生欄
+
+```css
+.container {
+  display: grid;
+  grid-auto-columns: 200px; /*自動產生欄*/
+}
+.a1{
+    border: 2px solid blue;
+}
+.a2{
+    border: 2px solid rgb(255, 145, 0);
+}
+.a3{
+    border: 2px solid rgb(44, 195, 102);
+}
+.a4{
+    border: 2px solid blue;
+}
+```
+
+會出現如附圖這樣:
+
+
+
+
+### gap - 產生間距
+
+```css
+.container {
+  display: grid;
+  grid-auto-rows: 300px; /*自動產生欄*/
+}
+.a1{
+    border: 2px solid blue;
+}
+.a2{
+    border: 2px solid rgb(255, 145, 0);
+}
+.a3{
+    border: 2px solid rgb(44, 195, 102);
+}
+.a4{
+    border: 2px solid blue;
+}
+```
+
+會出現如附圖這樣:
+
+
+
+
+### justify-items - 格子內元素水平對齊
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center; /*格子內元素水平對齊*/
+}
+.a1{
+    border: 2px solid blue;
+}
+.a2{
+    border: 2px solid rgb(255, 145, 0);
+}
+.a3{
+    border: 2px solid rgb(44, 195, 102);
+}
+.a4{
+    border: 2px solid blue;
+}
+```
+會出現如附圖這樣:
+
+
+
+
+### align-items - 格子內元素垂直對齊
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center; /*格子內元素垂直對齊*/
+}​
+.a1{
+    border: 2px solid blue;
+}
+.a2{
+    border: 2px solid rgb(255, 145, 0);
+}
+.a3{
+    border: 2px solid rgb(44, 195, 102);
+}
+.a4{
+    border: 2px solid blue;
+}
+```
+會出現如附圖這樣:
+
+
+
+
+### align-content - 整個 Grid 垂直對齊容器
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 300px;
+  align-items: center; /*整個 Grid 垂直對齊容器*/
+  border: 2px solid black;
+}
+.a1{
+    border: 2px solid blue;
+}
+
+.a2{
+    border: 2px solid rgb(255, 145, 0);
+}
+
+.a3{
+    border: 2px solid rgb(44, 195, 102);
+}
+.a4{
+    border: 2px solid blue;
+}
+```
+會出現如附圖這樣:
+
+
+
+
+### grid-auto-flow - 自動填法
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 300px;
+  grid-auto-flow: column; /*自動田法*/
+  border: 2px solid black;
+}
+.a1{
+    border: 2px solid blue;
+}
+.a2{
+    border: 2px solid rgb(255, 145, 0);
+}
+.a3{
+    border: 2px solid rgb(44, 195, 102);
+}
+.a4{
+    border: 2px solid blue;
+}
+```
+會出現如附圖這樣:
+

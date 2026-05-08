@@ -4,32 +4,32 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: '關於我',
+    Svg: require('@site/static/img/svg/undraw_profile_d7qw.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        目前專注於前端開發學習，熱衷於將所學整理成筆記，
+        持續累積實作經驗，朝成為前端工程師的目標前進。
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: '技術能力',
+    Svg: require('@site/static/img/svg/undraw_programming_j1zw.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        具備 Vue3、JavaScript、Git版本控制，
+        並使用 Naive UI、Vue Router、Pinia進行專案開發的實戰經驗。
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: '跨領域背景',
+    Svg: require('@site/static/img/svg/undraw_resume_jrgi.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        過去擔任過禮賓接待員及企劃助理專員，培養出良好的溝通能力、
+        負責與細心的工作態度，以及跨部門協作與專案執行的實務經驗。
       </>
     ),
   },
@@ -37,7 +37,7 @@ const FeatureList = [
 
 function Feature({Svg, title, description}) {
   return (
-    <div className={clsx('col col--4')}>
+    <div className={clsx('col col--4', styles.featureCard)}>
       <div className="text--center">
         <Svg className={styles.featureSvg} role="img" />
       </div>

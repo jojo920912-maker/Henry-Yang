@@ -1,0 +1,8 @@
+{
+  "label": "Environmental status",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "環境建構相關筆記，包含 Git 版本控制與常用指令。"
+  }
+}

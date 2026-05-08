@@ -1,0 +1,1197 @@
+---
+title: "認識 javascript 裡字串、陣列、物件的基礎操作"
+sidebar_title: "認識 javascript 裡字串、陣列、物件的基礎操作"
+tags: [array, string, object]
+---
+
+## 提要
+
+
+
+## 字串String
+
+字串（String）是`一連串字元組成的序列`，是程式設計中`表示和處理文字資料`的基礎類型，可由`字母、數字、符號或空格`組成，通常用`雙引號`括起來，而字串最常出現的地方：`表單輸入、搜尋、顯示文案、格式化資料（電話/日期/金額）、做驗證（是否空白、長度、是否含特定字）`。
+
+
+
+### 取得長度 "length"
+
+通常使用在檢查輸入長度（例如員工編號 8 碼）。
+
+基本語法範例:
+
+```javascript
+const id = "A1234567";
+console.log(id.length); // 8
+```
+
+實際範例:
+
+```javascript
+function checkIdLength(id) {
+  // length 是「字串有幾個字元」
+  // "A1234567" 一共有 8 個字元
+  const len = id.length
+
+  if (len === 8) {
+    return "長度正確（8碼）"
+  } else {
+    return `長度不正確，目前是 ${len} 碼`
+  }
+}
+
+// 範例（用你的資料）
+const id = "A1234567"
+console.log(checkIdLength(id)) // 長度正確（8碼）
+```
+
+### 去除空白 "trim"
+
+如果輸入不小心再前後多打空白，`trim` 會把`「前後空白」`去掉。
+
+```javascript
+const input = "12345678";
+const cleaned = input.trim();
+console.log(cleaned); // "12345678"
+```
+
+### 變大小寫:toUpperCase() / toLowerCase()
+
+```javascript
+const code = "abC12";
+console.log(code.toUpperCase()); // "ABC12"
+console.log(code.toLowerCase()); // "abc12"
+```
+
+### 檢查包含:includes()
+
+```javascript
+const msg = "welcome to my website";
+console.log(msg.includes("website"));// true
+```
+
+### 檢查開頭/結尾:startsWith() / endsWith()
+
+```javascript
+const filename = "photo.png";
+console.log(filename.endsWith(".png")); // true
+```
+
+### 取子字串:slice()
+
+```javascript
+const phone = "0912345678";
+console.log(phone.slice(0, 4)); // "0912"
+console.log(phone.slice(4));    // "345678"​
+```
+
+### 分割成陣列:split()
+
+例如將數字「1,2,3」拆成陣列。
+
+```javascript
+const text = "1,2,3";
+const arr = text.split(",");
+console.log(arr);  //[ '1', '2', '3' ]
+```
+
+### 合併字串:模板字串 `${}`
+
+```javascript
+const name = "Jojo";
+const product = "computer";
+console.log(`${name} 將 ${product} 加入到購物車`);  //Jojo 將 computer 加入到購物車
+```
+
+### 替換:replace() / replaceAll()
+
+```javascript
+const s = "Hello World World";
+console.log(s.replace("World", "JS"));     // "Hello JS World"
+console.log(s.replaceAll("World", "JS"));  // "Hello JS JS"
+```
+
+### 字串轉數字:Number() / parseInt()
+
+表單輸入通常是字串，要先轉數字才好算。
+
+```javascript
+const n1 = Number("12");      // 12
+const n2 = parseInt("12px");  // 12
+```
+
+
+
+## 陣列 Array
+
+陣列就是「一堆資料排在一起」，像`商品列表、員工名單、訂單清單`等。最常見需求：`新增/刪除、找資料、過濾、轉換、加總、排序`。
+
+
+
+先建立新的資料範例，後面都用這個範例:
+
+```javascript
+const students = [
+  { id: 1, name: "Alice", score: 85, passed: true },
+  { id: 2, name: "Bob", score: 92, passed: true },
+  { id: 3, name: "Charlie", score: 58, passed: false },
+  { id: 4, name: "David", score: 92, passed: true },
+]
+```
+
+
+### 尋找:find() / findIndex()
+是用來找陣列中`"第一個"`符合條件的元素，函數會遍歷陣列中的`每一個元素`，直到找到`符合條件`的那一個。找到後，它會返回這個元素。如果沒有找到符合條件的元素，它會返回 `undefined`。
+
+而說白就是 : `找到就停，並且回傳那個元素`。
+
+先看基本組成範例:
+
+```javascript
+const result = arr.find((item, index, arr) => {
+  return true/false
+})
+
+
+
+const users = [{id:1},{id:2}]
+const u = users.find(x => x.id === 2) // {id:2}
+```
+
+那接下來用上述的資料來做後續的範例:
+
+想要找到 id=3 的學生
+
+```javascript
+const students = [
+  { id: 1, name: "Alice", score: 85, passed: true },
+  { id: 2, name: "Bob", score: 92, passed: true },
+  { id: 3, name: "Charlie", score: 58, passed: false },
+  { id: 4, name: "David", score: 92, passed: true },
+]
+
+//用 id 找到 id=3 的學生
+function huntFotStudents(target){
+  const result = students.find((findTarget) => findTarget.id === target)
+  console.log(result)
+}
+
+huntFotStudents(3)  
+//{ id: 3, name: 'Charlie', score: 58, passed: false }
+```
+
+這邊的意思是:
+
+函數 `huntFotStudents` ，參數叫 `target`
+
+定義 `const` 變數 `result` 去接受 `find` 找到接收的值。
+
+
+
+`((findTarget) => findTarget.id === target)`
+
+而上述箭頭函數裡面，參數 `findTarget` 是 `students` 陣列目前正在被檢查的那一個元素`("也就是代表一個 student 物件")`
+
+`findTarget.id` 是那個元素自己的 `id` 值
+
+`console.log(result)` `console` 印出 `result`
+
+最後再將 `huntFotStudents(3)` 這個函數進行輸出。
+
+
+
+當然可以使用 `for` 迴圈做:
+
+```javascript
+unction huntForStudents(target) {  // 設立參數target
+  let result = undefined   // 這邊先預設這個變數沒有值
+
+  for (let i = 0; i < students.length; i++) {
+  // i = 0 ， 設立條件取 students.length 陣列的長度
+    if (students[i].id === target) {  
+    // 目前這一圈的 student[i] 代表 for 迴圈目前跑到的那一學生的物件
+    // 而 students[i].id 是取該學生 student 的 id 值出來
+    // 而 === target 會去查看是不是妳要的 id
+      result = students[i] 
+      // 而這段在做的事情是，輸出函數比如說是參數 "3" 好了
+      // 程式碼在執行時會進行時
+      // 比如說 i = 0 ， students[0] 是 Alice，id = 1
+      // 而 i = 1 ， students[1] 是 Bob，id = 2
+      // 再來 i = 2 ， students[2] 是 Charlie，id = 3
+      // 因為找到了 Charlie 是 id = 3 ，所以會把 Charlie 存到 result
+      break  //找到就停止
+    }
+  }
+  console.log(result) // 印出物件
+}
+
+huntForStudentsByFor(3)
+// { id: 3, name: 'Charlie', score: 58, passed: false }
+```
+
+### 遍歷:forEach
+
+`forEach` 是拿來`「逐一跑過每個元素，做事情」`，但是`他並不會傳新的陣列`。
+
+再說白話一點，就是把陣列裡的每個元素，依序拿出來，交給你寫的函式去處理一次。
+
+而這邊我們先做他最基本的架構:
+
+```javascript
+array.forEach((item, index, array) => {
+  // item: 目前這個元素
+  // index: 目前是第幾個（0 開始）
+  // array: 整個原陣列（很少用到）
+})
+```
+
+我們這邊舉個範例吧!用上面的資料來做舉例吧!
+
+```javascript
+const students = [
+  { id: 1, name: "Alice", score: 85, passed: true },
+  { id: 2, name: "Bob", score: 92, passed: true },
+  { id: 3, name: "Charlie", score: 58, passed: false },
+  { id: 4, name: "David", score: 92, passed: true },
+]
+
+
+// 這邊要算學生總平均
+​
+function classHighScore(){  // 這邊先設定函數
+  let classScore = 0  // 先設定變數，因為待會要把每個人的分數加進來
+
+  students.forEach((student) => {   
+   // 而這邊forEach會做的事情，會將 students 內的每個元素「依序」拿出來
+   // 放進 student 裡面
+   
+    classScore += student.score  
+   // 這邊進行計算:
+   // let classScore = 0 ，而 forEach 依序將分數拿出來進行加總
+   // 跑第一次 0 + 85 = 85
+   // 跑第二次 85 + 92 = 177
+   // 跑第三次 177 + 58 = 235
+   // 跑第四次 235 + 92 = 327
+  })
+  console.log(classScore / students.length) 
+  // 這邊做最後的計算，算平均
+  // 最後得出的327去除以4("students.length")
+}
+
+classHighScore()  //再把結果印出來
+```
+
+### 轉換 "map"
+`map` 會將每個元素都`轉換一次`，然後`產生一個新陣列`出來。`("但是他不做篩選")`
+
+而在說白的就是把陣列裡每一個元素，換成新的東西，最後得到一個新陣列。
+
+map基礎建構:
+
+```javascript
+const items = ["wallet", "earphone"];
+const upper = items.map(item => item.toUpperCase());
+console.log(upper); // [ 'WALLET', 'EARPHONE' ]
+```
+
+那之後我們拿上面的範例資料來作範例題目吧!
+
+```javascript
+const students = [   //資料
+  { id: 1, name: "Alice", score: 85, passed: true },
+  { id: 2, name: "Bob", score: 92, passed: true },
+  { id: 3, name: "Charlie", score: 58, passed: false },
+  { id: 4, name: "David", score: 92, passed: true },
+]
+```
+
+這邊使用 `"map"` 先來做回傳新陣列的範例:
+
+```javascript
+const students = [  //資料
+  { id: 1, name: "Alice", score: 85, passed: true },
+  { id: 2, name: "Bob", score: 92, passed: true },
+  { id: 3, name: "Charlie", score: 58, passed: false },
+  { id: 4, name: "David", score: 92, passed: true },
+]
+
+function studentGrade(studentList){
+  // 設定函數 studentGrade，參數 studentList 代表 students 每個物件
+  return studentList.map(learner => {
+    // 而這邊 會把陣列裡的每一個元素「拿出來處理一次」
+    // 每一次處理後，要用 return 一個「新的值」回去 ， 而 map 會把新的值收集起來再進行回傳
+    // 而 (learner => {} 這邊屬於箭頭函式 ， 這邊的 learner 代表「目前這一次處理到的學生物件」
+    // 這邊也可去想像說 map 是這樣運作:
+    // 跑一次 : learner = students[0]（Alice）
+    // 跑第二次 : learner = students[1]（Bob）
+    // 跑第三次 :learner = students[2]（Charlie）
+    // 跑第四次 :learner = students[3]（David）
+    return{
+      // 這邊在做把「原本學生物件」轉換成「一個新的物件」
+      // 新物件只保留兩個欄位 : name 和 score
+      name: learner.name,
+      score: learner.score
+    }
+  })
+}​
+
+const result = studentGrade(students)
+// 定義一個變數，去呼叫 studentGrade
+// 把 students 傳進去，然後用函式回傳「新陣列」，用新 result 接住這個新陣列
+console.log(result) //再把 result 這支新陣列印出來
+
+// 輸出 : ​
+[
+{ name: 'Alice', score: 85 },
+{ name: 'Bob', score: 92 },
+{ name: 'Charlie', score: 58 },
+{ name: 'David', score: 92 }
+]
+```
+
+那如果我們要做平均成績呢?
+
+來做範例:
+
+```javascript
+const students = [
+  { id: 1, name: "Alice", score: 85, passed: true },
+  { id: 2, name: "Bob", score: 92, passed: true },
+  { id: 3, name: "Charlie", score: 58, passed: false },
+  { id: 4, name: "David", score: 92, passed: true },
+]
+
+function classAverage(studentList) {
+  // 設定函式 classAverage ， 參數studentList
+  // 而參數 studentList ， 代表 students 的物件
+  let total = 0   // 設定變數 total 為 0
+
+  studentList.forEach((classStudent) => {
+   // 使用forEach，依序將student的東西拿出來
+   // 並放在 classStudent 裡面
+    total += classStudent.score
+   // 這邊是 total = total + classStudent.score
+  })
+  return total / studentList.length
+   // 回傳 total 裡面的總和除以 studentList.length 陣列元素個數」（學生人數），不是物件長度。
+   //這裡是 4。
+}
+
+
+function addClassAverage(studentList) {
+   //這邊參數 studentList 代表 student 的物件
+  const avg = classAverage(studentList)
+   // 這邊使用變數 avg 去接住函式 classAverage 的結果
+
+  return studentList.map((leaner) => {
+   // 使用 map 去遍歷 studentList 的物件
+    return {
+   // 由於 map 會回傳新的陣列出來，所以回傳新的 name、score、classAvg出來
+      name: leaner.name,
+      score: leaner.score,
+      classAvg: avg, // 回傳 classAvg 的變數 avg 的結果。
+    }
+  })
+}
+
+console.log(addClassAverage(students))
+// 將 addClassAverage 函式的結果給輸出出來
+// 輸出:[
+  //{ name: 'Alice', score: 85, classAvg: 81.75 },
+  //{ name: 'Bob', score: 92, classAvg: 81.75 },
+  //{ name: 'Charlie', score: 58, classAvg: 81.75 },
+  //{ name: 'David', score: 92, classAvg: 81.75 }
+//]
+```
+
+### 過濾 "filter"
+`filter` 的意思跟 `map` 很像，`兩個都會產生新的陣列出來`，但是兩個差別在於說 `"map"` 每一個都會進行一個轉換，但是 `"filter"` 會將陣列每個元素都丟進條件進行判斷，如果判斷結果是 `true` 就是留下來，如果是 `false` 就丟掉，最後再將結果回傳`「留下來的元素」`組成的新陣列。
+
+那我們先看最基本的組成:
+
+```javascript
+const products = [。
+  { name: "earphone", price: 600 },
+  { name: "wallet", price: 1999 },
+];
+
+const expensive = products.filter(p => p.price > 500);
+console.log(expensive); 
+
+//[ { name: 'earphone', price: 600 }, { name: 'wallet', price: 1999 }]
+
+```
+
+那接下來我們直接看題目範例:
+
+如果我們今天要要做"及格分數的學生"
+
+```javascript
+// 上述資料
+​const students = [
+  { id: 1, name: "Alice", score: 85, passed: true },
+  { id: 2, name: "Bob", score: 92, passed: true },
+  { id: 3, name: "Charlie", score: 58, passed: false },
+  { id: 4, name: "David", score: 92, passed: true },
+]
+
+function passList(passLearner){ 
+// 設定函數​ passList 及 參數 passLearner 
+  return students.filter((learner) => learner.score >= passLearner)
+// 使用​filter : >=  passLearner的人留下來
+}
+
+const pastList = passList(60) // 定義變數去接住函數輸出的結果
+console.log(pastList) // 輸出 pastList
+
+// 輸出:​
+[
+  { id: 1, name: 'Alice', score: 85, passed: true },
+  { id: 2, name: 'Bob', score: 92, passed: true },
+  { id: 4, name: 'David', score: 92, passed: true }
+]
+```
+
+那要做及格學生的 name 組成陣列那該怎麼做呢?
+
+```javascript
+// 上述資料
+​const students = [
+  { id: 1, name: "Alice", score: 85, passed: true },
+  { id: 2, name: "Bob", score: 92, passed: true },
+  { id: 3, name: "Charlie", score: 58, passed: false },
+  { id: 4, name: "David", score: 92, passed: true },
+]
+
+function nameList(nameStudent){  
+// ​設定函式 nameList 、 參數 nameStudent
+  return students.filter((studentName) => studentName.score >= nameStudent)
+  .map((studentName)  => studentName.name )
+// ​使用 filter : 留下 >= nameStudent 的學生 (回傳物件陣列)
+//​ 再用 map : 把物件陣列轉成名字陣列（回傳字串陣列）
+}
+
+const nameArr = nameList(60) // 使用變數去接住函式的輸出
+console.log(nameArr) // 將變數輸出出來，輸出[ 'Alice', 'Bob', 'David' ]
+```
+
+那現在要做做:及格人數 / 不及格人數 / 高分人數，在做統計人數
+
+```javascript
+// 上述資料
+​const students = [
+  { id: 1, name: "Alice", score: 85, passed: true },
+  { id: 2, name: "Bob", score: 92, passed: true },
+  { id: 3, name: "Charlie", score: 58, passed: false },
+  { id: 4, name: "David", score: 92, passed: true },
+]
+
+
+function scoreStudent(studentList, line) {
+// 這邊設定​函式 scoreStudent 參數 studentList , line
+// 這邊設定兩個參數是因為這個函式要做兩個事情 ("輸入資訊")
+//​ studentList 是要做要篩選或處理哪一份學生資料 ("原料資料")
+// ​而 line 用什麼門檻或者分數門檻來篩選，也就是規則 ("條件")
+// 說白一點這邊在做:
+// "我要一個學生陣列 + 一條分數線，我就回傳分數 >= 這條線的學生。"
+  return studentList.filter((s) => s.score >= line)
+// 而filter: ​留下這個 >= line 規則跟條件的學生。
+// ​回傳「符合條件的新陣列」
+}
+
+function statisticsStudent(studentList, passLine, topLine) {
+// 設定函式 ​statisticsStudent 及參數 studentList, passLine, topLine
+
+  const total = studentList.length
+// 這邊設定 total 這個變數，要做全班總人數
+// 而 studentList.length 的 length 就是陣列的「學生人數」
+​
+  const passed = scoreStudent(studentList, passLine).length
+// 這邊設定 passed 在做及格人數
+// scoreStudent(studentList, passLine) 會回傳「分數 >= passLine」的學生陣列
+// .length 代表這個陣列有幾個元素（也就是幾個人)
+
+  const top = scoreStudent(studentList, topLine).length
+// ​這邊設定 top 在做高分人數
+// scoreStudent(studentList, topLine) 會回傳「分數 >= topLine」的學生陣列
+// .length 代表高分有幾個人
+
+  const failed = total - passed
+// 這邊設定 ​failed 在做不及格人數
+// 全班總人數 total - 及格人數 passed = 不及格人數 failed
+
+  return { total, passed, failed, top }
+// 回傳一個統計結果物件，方便外面一次拿到所有數字
+// 例如 result.passed、result.failed、result.top 這樣取用
+}
+
+console.log(statisticsStudent(students, 60, 90))
+// 印出​函式 statisticsStudent 輸入參數 students, 60, 90
+// 印出​{ total: 4, passed: 3, failed: 1, top: 2 }
+```
+
+### 加總/累積 "reduce"
+`reduce` 是會對陣列中的每一個元素，由左至右傳入指定的函數，最後返回一個`累加 (accumulator) 的值`。也就是:`「把一整個陣列，累積/縮減成一個結果」`。
+
+
+
+那我們先看基本組成:
+
+```javascript
+const cart = [
+  { name: "watch", price: 200, qty: 2 },
+  { name: "necklace", price: 8000, qty: 1 },
+];
+
+const total = cart.reduce((sum, item) => {
+  return sum + item.price * item.qty;
+}, 0);
+
+console.log(total); // 8400
+```
+
+題目程式範例:
+
+```javascript
+// 上述資料
+const students = [
+  { id: 1, name: "Alice", score: 85, passed: true },
+  { id: 2, name: "Bob", score: 92, passed: true },
+  { id: 3, name: "Charlie", score: 58, passed: false },
+  { id: 4, name: "David", score: 92, passed: true },
+]
+
+// 做總分 / 平均
+
+//做平均
+
+function averageScore(){
+  return students.reduce((avg , grade) => {
+    return avg + grade.score
+  },0)
+}
+
+console.log(averageScore())
+
+// 做總分
+function totalScore(){
+  const total = students.reduce((sum , Fraction) => {
+    return sum + Fraction.score
+  },0)
+  return total / students.length
+}
+
+console.log(totalScore())
+
+// 統計人數：及格/不及格/高分
+function passStudent(studentList, passList, topList){
+  const total = 0
+
+  return studentList.reduce((past , number) => {
+    past.total += 1
+
+    if(number.score >= passList) past.passed +=1
+    else past.failed += 1
+
+    if(number.score >= topList) past.top +=1
+
+    return past
+  },{total: 0, passed: 0, failed: 0, top: 0})
+}
+
+console.log(passStudent(students, 60, 90))
+// 找最大值 / 找最高分學生
+// 找最大值
+
+function getMaxScore(studentList) {
+  return studentList.reduce((max, s) => {
+    // 如果目前學生分數比較大，就更新 max
+    if (s.score > max) return s.score
+    // 否則保持原本 max
+    return max
+  }, -Infinity) // 初始值用 -Infinity，確保第一個分數一定會更大
+}
+
+console.log(getMaxScore(students)) // 92
+
+// 找最高分學生
+
+function getTopStudent(studentList) {
+  if (studentList.length === 0) return null // 防呆：空陣列就回 null
+  return studentList.reduce((best, s) => {
+    // best 是目前最高分的那位學生（物件）
+    if (s.score > best.score) return s
+    return best
+  }, studentList[0]) // 初始值用第一位學生當基準
+}
+
+console.log(getTopStudent(students))
+// 可能是 Bob 或 David（因為兩個都是 92，取決於資料順序）
+
+// 及格/不及格兩群
+
+function groupByPass(studentList, passLine) {
+  return studentList.reduce((acc, s) => {
+    // acc 是分組盒子：pass 裝及格、fail 裝不及格
+    if (s.score >= passLine) acc.pass.push(s)
+    else acc.fail.push(s)
+    return acc
+  }, { pass: [], fail: [] }) // 初始值：兩個空陣列
+}
+
+console.log(groupByPass(students, 60))
+
+// 建立「查詢表」
+
+function buildIndexById(studentList) {
+  return studentList.reduce((acc, s) => {
+    // 用 id 當 key，把整個學生物件存進去
+    acc[s.id] = s
+    return acc
+  }, {}) // 初始值是空物件
+}
+
+const byId = buildIndexById(students)
+console.log(byId)
+console.log(byId[3]) // { id: 3, name: "Charlie", score: 58, passed: false }
+
+// 串接字串
+
+function buildReportText(studentList) {
+  return studentList.reduce((text, s, i) => {
+    // text 是目前累積的字串
+    // i 是索引（第幾筆）
+    return text + `${i + 1}. ${s.name} - ${s.score}\n`
+  }, "成績單\n") // 初始值先放標題
+}
+
+console.log(buildReportText(students))
+```
+
+
+### 新增/刪除:push pop / unshift shift
+基本操作範例:
+
+```javascript
+const cart = ["1","2","3","4","5"];
+
+cart.push("switch");     // 新增尾巴
+cart.unshift("hat");    // 新增前面
+
+cart.pop();             // 刪除尾巴
+cart.shift();           // 刪除前面
+
+console.log(cart);
+```
+
+而實際將新東西push進去範例:
+
+```javascript
+function secondHighScore(students){
+  const result = [] // 我們先準備空的陣列，要將結果推進去
+
+  for(let i = 0; i < students.length; i++){
+    if(students[i].score > 90){
+      result.push(students[i].name)  
+   // 再將得出來的結果推進去我們準備空的陣列當中
+    }
+  }
+  return result
+}
+
+console.log(secondHighScore(students))
+```
+
+
+
+### 合併陣列"concat"
+
+可以在陣列中與其他多個陣列合併，並回傳新的陣列。原陣列不會被改變。我們可以將要合併的陣列或元素，多個或單個，以引數的方式，讓原陣列與這些要併入的陣列或元素合併在一起。
+
+在白話一點就是 :「把兩個（或多個）陣列接在一起，回傳一個新的陣列」。
+
+基本上他 "不會改到原本的陣列" 、 "他會回傳「新的陣列」" 、 "他也可以接很多個"
+
+那我們來來看基礎用法組成 :
+
+```javascript
+const a = [1,2];
+const b = [3,4];
+
+console.log(a.concat(b)); // [1,2,3,4]
+console.log([...a, ...b]); // [1,2,3,4]
+```
+
+直接來看實際範例:
+
+```javascript
+// 比如我們現在有兩個 API​ 資料需要串
+const page1 = [
+  { id: 1, name: "Alice", score: 85 },
+  { id: 2, name: "Bob", score: 92 },
+  { id: 3, name: "Charlie", score: 58 },
+]
+
+const page2 = [
+  { id: 3, name: "Charlie", score: 40 },
+  { id: 4, name: "David", score: 90 },
+  { id: 5, name: "Eva", score: 70 },
+]
+
+const first = page1.concat(page2)
+console.log(first)
+// 輸出:​
+[
+  { id: 1, name: 'Alice', score: 85 },
+  { id: 2, name: 'Bob', score: 92 },
+  { id: 3, name: 'Joe', score: 58 },
+  { id: 3, name: 'Charlie', score: 40 },
+  { id: 4, name: 'David', score: 90 },
+  { id: 5, name: 'Eva', score: 70 }
+]
+```
+
+當然也可以接很多個:
+
+```javascript
+const page1 = [
+  { id: 1, name: "Alice", score: 85 },
+  { id: 2, name: "Bob", score: 92 },
+  { id: 3, name: "Charlie", score: 58 },
+]
+
+
+const page2 = [
+  { id: 3, name: "Charlie", score: 40 },
+  { id: 4, name: "David", score: 90 },
+  { id: 5, name: "Eva", score: 70 },
+]
+
+
+const merged = page1.concat(page2, [{ id: 6, name: "Frank", score: 66 }])
+console.log(merged)
+// 輸出: ​
+[
+  { id: 1, name: 'Alice', score: 85 },
+  { id: 2, name: 'Bob', score: 92 },
+  { id: 3, name: 'Joe', score: 58 },
+  { id: 3, name: 'Charlie', score: 40 },
+  { id: 4, name: 'David', score: 90 },
+  { id: 5, name: 'Eva', score: 70 },
+  { id: 6, name: 'Frank', score: 66 }  // 新增的資料
+]
+```
+
+那還有另一種方式可以去合併~
+就是用" ... " 這種方式
+
+```javascript
+const page1 = [
+  { id: 1, name: "Alice", score: 85 },
+  { id: 2, name: "Bob", score: 92 },
+  { id: 3, name: "Charlie", score: 58 },
+]
+
+const page2 = [
+  { id: 3, name: "Charlie", score: 40 },
+  { id: 4, name: "David", score: 90 },
+  { id: 5, name: "Eva", score: 70 },
+]
+
+const merged = [...page1,...page2]
+console.log(merged)
+// 輸出​:
+[
+  { id: 1, name: 'Alice', score: 85 },
+  { id: 2, name: 'Bob', score: 92 },
+  { id: 3, name: 'Joe', score: 58 },
+  { id: 3, name: 'Charlie', score: 40 },
+  { id: 4, name: 'David', score: 90 },
+  { id: 5, name: 'Eva', score: 70 }
+]
+```
+但是我們使用上述的方式會發現就是`有重複的`，那該怎麼做
+
+我們可以使用`" map " 跟 "reduce"`。
+
+但是這兩個還是有點差別 `"map"` 會保留最後一筆 ，而 `"reduce"` 會保留第一筆。
+
+那我們直接看範例:
+
+```javascript
+function mergeAndUniqueById(listA, listB) {
+  const merged = listA.concat(listB)
+
+  const map = new Map()
+  merged.forEach((item) => {
+    map.set(item.id, item) // 同 id 後面的會覆蓋前面的（保留最新）
+  })
+
+  return Array.from(map.values())
+}
+
+console.log(mergeAndUniqueById(page1, page2))
+// 輸出:
+[
+  { id: 1, name: 'Alice', score: 85 },
+  { id: 2, name: 'Bob', score: 92 },
+  { id: 3, name: 'Charlie', score: 40 },
+  { id: 4, name: 'David', score: 90 },
+  { id: 5, name: 'Eva', score: 70 }
+]
+```
+
+```javascript
+function mergeAndUniqueById_keepFirst(listA, listB) {
+  const merged = [...listA, ...listB]
+
+  const byId = merged.reduce((acc, item) => {
+    if (!acc[item.id]) {
+      acc[item.id] = item // 第一次遇到這個 id 才存（保留第一筆）
+    }
+    return acc
+  }, {})
+
+  return Object.values(byId)
+}
+
+console.log(mergeAndUniqueById_keepFirst(page1, page2))
+// 輸出:
+[
+  { id: 1, name: 'Alice', score: 85 },
+  { id: 2, name: 'Bob', score: 92 },
+  { id: 3, name: 'Joe', score: 58 },
+  { id: 4, name: 'David', score: 90 },
+  { id: 5, name: 'Eva', score: 70 }
+]
+```
+
+## 物件 Object
+
+
+物件就是`「一個東西 + 它的屬性」`，像一個商品：有 `name、price、stock`。最常見需求:`讀取、修改、新增欄位、刪除欄位、判斷有沒有某個 key、遍歷 keys/values`。
+
+
+
+### 建立 & 讀取：. 與 `[]`
+
+`. `就象徵著欄位名稱固定、確定存在，而`[]`：欄位名稱是`「變數」`或有`特殊字元`。
+
+而如果今天我們確定要拿比如說 `name、score`  這種固定欄位時，用` .`
+
+那如果的欄位不固定，是`「用變數傳進來」`的時候，就用`[]`
+
+那麼我們就用這個資料來做範例吧!
+
+```javascript
+// 資料​
+const students = [
+  { id: 1, name: "Alice", score: 85, passed: true },
+  { id: 2, name: "Bob", score: 92, passed: true },
+  { id: 3, name: "Charlie", score: 58, passed: false },
+  { id: 4, name: "David", score: 92, passed: true },
+]
+```
+
+我們先看基本語法建立:
+
+```javascript
+const product = {
+  name: "toy car",
+  price: 399,
+};
+
+console.log(product.name);      // "toy car"
+console.log(product["price"]);  // 399
+```
+
+那實際例子呢?
+
+使用` . `去讀取固定欄位名
+
+```javascript
+function studentName(students, id) {
+  const student = findStudent(students, id)
+
+  if (student === undefined) {
+    return "找不到學生"
+  }
+
+  return student.name
+}
+
+console.log(studentName(students, 1))  // Alice
+console.log(studentName(students, 99)) // 找不到學生
+```
+
+那使用`[]`讀動態欄位
+
+```javascript
+function studentField(students, id, field) {
+  const student = findStudent(students, id)
+
+  if (student === undefined) {
+    return "找不到學生"
+  }
+
+  return student[field]
+}
+
+console.log(studentField(students, 2, "score"))  // 92
+console.log(studentField(students, 2, "passed")) // true
+```
+
+
+
+### 修改/新增欄位
+
+基本上就是把原本欄位的值「換成新值」或者原本沒有這個欄位，我們加一個上去。
+
+基本語法建立:
+
+```javascript
+product.price = 499;      // 修改
+product.stock = 20;       // 新增
+console.log(product);
+```
+
+我們直接看實際題目範例:
+
+```javascript
+// 今天更新某學生分數("需進行修改")
+function studentScore(students, id, newScore) {
+  const student = findStudent(students, id)
+
+  if (student === undefined) return "找不到學生"
+
+  const copied = { ...student }     // 複製一份新物件
+  copied.score = newScore           // 修改分數
+  copied.passed = newScore >= 60    // 順便改 passed（因為分數變了）
+
+  return copied
+}
+
+console.log(studentScore(students, 3, 70))
+// { id: 3, name: "Charlie", score: 70, passed: true }
+
+
+// 那今天要加上​加上 comment 欄位
+function studentComment(students, id, comment) {
+  const student = findStudent(students, id)
+
+  if (student === undefined) return "找不到學生"
+
+  const copied = { ...student }
+  copied.comment = comment // 新增欄位
+
+  return copied
+}
+
+console.log(studentComment(students, 1, "表現不錯！"))
+```
+
+### 刪除欄位"delete"
+
+今天我們要把這個 key 從物件裡拿掉，之後就不存在了。
+
+基本語法:
+```javascript
+delete product.stock;
+```
+
+而實際範例:
+
+```javascript
+function studentField(students, id, field) {
+  const student = findStudent-(students, id)
+
+  if (student === undefined) return "找不到學生"
+
+  const copied = { ...student }
+  delete copied[field]
+
+  return copied
+}
+
+console.log(studentField(students, 2, "passed"))
+// { id: 2, name: "Bob", score: 92 }
+```
+
+### 判斷欄位存在"in / hasOwnProperty"
+
+什麼叫「欄位存在」?
+
+就是我們要確認，物件裡面有沒有這個 key。
+
+而`in`是在做`「有沒有這個 key」`。
+
+而`hasOwnProperty`再問說`「這個 key 是不是它自己本身的」`。
+
+基本語法:
+
+```javascript
+console.log("price" in product); // true
+console.log(product.hasOwnProperty("price")); // true
+```
+
+實際範例:
+
+```javascript
+function checkStudent(students, id, field) {
+  const student = findStudent(students, id)
+
+  if (student === undefined) return "找不到學生"
+
+  return {
+    field: field,
+    inResult: field in student,
+    hasOwnResult: student.hasOwnProperty(field),
+  }
+}
+
+console.log(checkStudent(students, 1, "score"))
+console.log(checkStudent(students, 1, "age"))
+```
+
+
+
+取 keys / values / entries:
+
+keys / values / entries 是什麼呢?
+
+Object.keys(obj)：拿到「所有欄位名」(key)
+Object.values(obj)：拿到「所有欄位值」(value)
+Object.entries(obj)：拿到「一組一組 [key, value]」
+基本語法範例:
+
+```javascript
+const obj = { a: 1, b: 2 };
+
+console.log(Object.keys(obj));   // ["a","b"]
+console.log(Object.values(obj)); // [1,2]
+console.log(Object.entries(obj));// [["a",1],["b",2]]
+```
+
+實際範例:
+
+```javascript
+function studentKeys(students, id) {
+  const student = findStudentKeys(students, id)
+  if (student === undefined) return "找不到學生"
+  return Object.keys(student)
+}
+
+function studentValues(students, id) {
+  const student = findStudentValues(students, id)
+  if (student === undefined) return "找不到學生"
+  return Object.values(student)
+}
+
+function studentEntries(students, id) {
+  const student = findStudentEntries(students, id)
+  if (student === undefined) return "找不到學生"
+  return Object.entries(student)
+}
+
+console.log(studentKeys(students, 1))
+console.log(studentValues(students, 1))
+console.log(studentEntries(students, 1))
+```
+
+### 遍歷物件"for...in"
+
+「遍歷」基本上就是：把物件裡每個欄位都走過一遍
+
+基本語法:
+
+```javascript
+const product = { name: "shirt", price: 399 };
+
+for (const key in product) {
+  console.log(key, product[key]);
+}
+```
+
+實際案例:
+
+```javascript
+//如果今天要把id/name/score/passed 全部印出來。​
+function listStudent(students, id) {
+  const student = findStudentlist (students, id)
+  if (student === undefined) return ["找不到學生"]
+
+  const lines = []
+  for (const key in student) {
+    lines.push(`${key}: ${student[key]}`)
+  }
+  return lines
+}
+
+console.log(listStudent(students, 4))
+```
+
+### 解構賦值
+
+就是把物件裡的欄位「拆出來」直接當變數用
+
+基本範例:
+
+```javascript
+const product = { name: "toy", price: 500 };
+
+const { name, price } = product;
+console.log(name, price);  // toy 500
+```
+
+實際範例:
+
+```javascript
+function studentSummary(students, id) {
+  const student = findSummary(students, id)
+  if (student === undefined) return "找不到學生"
+
+  const { name, score, passed } = student
+  return `${name}｜分數:${score}｜passed:${passed}`
+}
+
+console.log(studentSummary(students, 2))
+```
+
+### 合併物件 "展開 ... / Object.assign"
+
+就是把兩個物件的欄位「合在一起」變成一個新物件
+
+基本用法:
+
+```javascript
+const a = { name: "shirt" };
+const b = { price: 399 };
+
+const merged = { ...a, ...b };
+console.log(merged); // {name:"shirt", price:399}
+```
+
+實際用法:
+
+```javascript
+// 使用... 合併​
+function mergeStudent(students, id, extraInfo) {
+  const student = findStudentmerge(students, id)
+  if (student === undefined) return "找不到學生"
+
+  return { ...student, ...extraInfo }
+}
+
+console.log(mergeStudent(students, 1, { rank: "A", city: "Kaohsiung" }))
+
+
+// 用 Object.assign 合併​
+function assignStudent(students, id, extraInfo) {
+  const student = findStudentassign(students, id)
+  if (student === undefined) return "找不到學生"
+
+  return Object.assign({}, student, extraInfo)
+}
+
+console.log(assignStudent(students, 3, { comment: "再努力一下" }))
+```

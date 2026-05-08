@@ -1,0 +1,931 @@
+---
+title: "認識vue裡的ref、watch、computed、reactive"
+sidebar_title: "認識vue裡的ref、watch、computed、reactive"
+tags: [vue, ref, computed, reactive, watch]
+---
+
+## 提要
+
+在開始了解 vue 之前我們需要先講解響應式函數，響應式函數就是
+
+如果資料一變，畫面或相關邏輯就會自動跟著變，不會需要手動更新DOM
+
+比如說我在Vue裡:
+
+```javascript
+import { ref } from 'vue'
+
+const count = ref(0)
+
+function add() {
+  count.value++  // 例如我更改這段
+}
+```
+
+我更改上述裡面的資料，Vue 會知道我改了，Vue 會自動幫我們：重新算 computed，然後觸發 watch，再來更新畫面。
+
+而像:
+
+- ref()
+- reactive()
+- computed()
+- watch()
+
+
+這些都是跟 Vue 響應式系統有關的 API，用來：
+
+建立可追蹤的資料（ref / reactive）
+建立衍生資料（computed）
+監聽資料變化（watch）
+所以口語說「響應式函數」，通常就是在指：
+
+`用來建立或使用 Vue 響應式系統的這些 API。`
+
+
+那基本組成:
+
+```javascript
+import { ref, watch } from 'vue'
+
+const count = ref(0)
+1      2       3  4
+```
+
+宣告一個常數，可以讓我們後續使用。
+為這個常數賦予名稱。
+響應式函數並接收一個參數初始值。
+初始值為數字 0。
+所以上面這句可以被理解為:
+
+我們宣告了一個常數叫做 `count`，它是一個響應式的物件，裡面存了一個`初始值 0`。
+
+
+
+## ref
+`ref` 是什麼呢? `ref` 是用來把一個普通的 JavaScript 值轉換成`「響應式資料」`。
+
+它會回傳一個物件，這個物件具有 `.value` 屬性，我們可以透過 `.value` 來讀取或修改這個值。
+
+但是當我們修改 `ref()` 回傳物件的 `.value` 時，Vue 會自動追蹤這個變化，並同步更新畫面。
+
+而 `ref()` 可以存入任何型別的資料`（例如 number、string、boolean、object、array 等）`，
+
+但在 `JavaScript 中讀取與寫入時，需要透過 .value 來操作。`
+
+
+
+那我們在說白一點， `ref` 就像你把一個就像你把一個值放進「可追蹤的盒子」，只要盒子裡的值變了，畫面就會進行更新。
+
+基本範例:
+
+JS:
+
+```javascript
+// JAVASCRIPT
+import { ref } from 'vue'
+
+const count = ref(0)
+
+function add() {
+  count.value++
+}
+```
+
+HTML:
+
+```HTML
+// HTML​
+<template>
+
+<button @click="add">+1</button>  
+// 使用@click是 Vue 的事件綁定
+// 等同原生 JS 的 addEventListener('click', ...)。
+// ​來引入 add 函式
+<p>{{ count }}</p>  // 然後使用{{}}雙大括弧，來引入變數count
+
+</template>
+```
+
+然後因為 `ref` 可以存入任何型別的資料，其中包含`"陣列"、"物件"等等`。
+
+那我們來看範例:
+
+
+JS:
+
+```javascript
+<script set up>
+import { ref } from 'vue'
+
+const form = ref({  
+// 這邊是宣告一個變數叫 form，裡面放的是「ref 回傳的那個物件」。
+// 使用ref去存入空物件''
+//​form：是一個變數（指向一個 ref 物件）
+
+  name: '',         // name: ''
+  email: ''         // email: ''
+})
+
+function fillDemo() {
+  form.value.name = '小明'  
+  // 因為外面的變數叫from，這邊因為要取裡面的資料，所以用from.value來取
+  // 那這邊要拿name，所以使用form.value.name來取
+  // 這邊把form.value.name，把裡面的物件叫改成'小明'
+  
+  form.value.email = 'joe123456@gmail.com'
+  // 因為外面的變數叫from，這邊因為要取裡面的資料，所以用from.value來取
+  // 那這邊要拿email，所以使用form.value.email來取
+  // 這邊把form.value.email，把裡面的物件叫改成'joe123456@gmail.com'
+  
+}
+
+function clear() {
+  form.value = { name: '', email: '' }
+  // form 是一個 ref 變數
+  // form.value 是盒子裡真正的資料
+  // 這行不是改某個欄位，而是 直接把整個物件換成一個新的空物件
+  // 代表說把表單恢復成初始狀態：name 空字串、email 空字串。
+}
+
+</script>
+```
+
+HTML:
+
+```HTML
+<template>
+
+<input v-model="form.name" placeholder="name" />
+// ​這邊的input會做，輸入的文字會雙向綁定到 js裡面的form.name
+// ​你在 input 打字 → form.name 會跟著變
+// 然後如果再程式裡面改​form.name → input 內容也會跟著變
+// 而 ​placeholder="name"，只是灰色提示文字，不會存進資料。
+
+<input v-model="form.email" placeholder="email" />
+// ​這邊的input會做，輸入的文字會雙向綁定到 js裡面的form.email
+// ​你在 input 打字 → form.email 會跟著變
+// 然後如果再程式裡面改​form.email → input 內容也會跟著變
+// 而 ​placeholder="email"，只是灰色提示文字，不會存進資料。
+
+<p>姓名：{{ form.name }}</p>
+// 而{{}}這邊大括弧是叫​插值語法，就是用來把資料塞進HTML
+// 使用{{form.name}}，把變數from裡面的name引入過來
+// 當使用​input 打字時，這行會即時更新，因為 form.name 是響應式的。
+<p>Email：{{ form.email }}</p>
+// 而{{}}這邊大括弧是叫​插值語法，就是用來把資料塞進HTML
+// 使用{{form.email}}，把變數from裡面的email引入過來
+// 當使用​input 打字時，這行會即時更新，因為 form.email 是響應式的。
+
+
+<button @click="fillDemo">填入範例</button>
+// 而按鈕按下去就會呼叫​fillDemo函式
+// 而是 Vue 的事件綁定
+// 意思等同原生 JS 的 addEventListener('click', ...)。​
+// ​函式​fillDemo裡面: function fillDemo() {
+// form.value.name = '阿哲'
+// form.value.email = 'jojo@example.com'
+// }
+// 而按下按鈕後:​input 會自動出現「阿哲」「jojo@example.com」
+// 下面 <p> 顯示也會同步更新
+
+<button @click="clear">清空</button>
+// 這邊​按下去就會呼叫​clear函式
+// ​而是 Vue 的事件綁定
+// 意思等同原生 JS 的 addEventListener('click', ...)。​
+// ​函式​​clear裡面:function clear() {
+// form.value = { name: '', email: '' }
+// }
+// 按下去會做:
+// ​兩個 input 會清空
+// 下面兩行 <p> 也會變空
+
+</template>
+```
+
+那陣列呢?
+
+陣列範例:
+
+JS:
+
+```javascript
+// JAVASCRIPT
+<script>
+import { ref } from 'vue'
+
+const todos = ref(['買牛奶', '寫作業']) 
+// 使用變數todos，來裝ref來裝陣列
+// 裡面有兩筆資料:​買牛奶、寫作業
+// 這邊​todos.value 是陣列本體
+
+const inputText = ref('')
+// 使用變數​inputText，來裝空字串
+// ​輸入框打的文字
+// ​todos.value 是陣列本體
+
+function addTodo() {
+  const text = inputText.value.trim()
+  // 這邊的trim會將inputText，輸入框的內容拿出來
+  // 而trim 會把字串前後的空白刪掉
+  // 會把頭尾空白清掉避免使用者輸入一堆空白也被當成一個 todos。
+  if (!text) return
+  // 這邊設定條件if，如果text是空的字串''，就代表false（falsy）
+  // 而這邊! 的意思是「取反」
+  // 如果!true → false 、 !false → true
+  // !text 等同於：「text 這個值如果是 falsy（像空字串）就會變成 true」
+  // 比如:text = ""，!text 這邊就會變成true  → 會進 if → return
+  // 如果text = "hi" ， 是truthy
+  // 那這邊!text 就會變成false → 不進 if → 繼續往下新增
+
+  todos.value.push(text)     
+  // 修改陣列
+  // 把新文字加到 todos 陣列尾端
+  
+  inputText.value = ''       
+  // 清空輸入框
+  // 新增完就把輸入框清空
+}
+
+function removeTodo(index) {
+// 而這邊​index 是你要刪掉的那筆在陣列中的位置（0、1、2…）
+  todos.value.splice(index, 1)
+  // splice(index, 1) 的意思是：從 index 開始 → 就刪掉 1 個元素
+  // 就會像這樣todos.value = ['買牛奶', '寫作業', '運動']
+  // removeTodo(1)
+  // 結果變成 ['買牛奶', '運動']
+  // 刪掉(1,'寫作業')這段
+
+}
+</script>
+```
+
+HTML:
+
+```HTML
+// HTML
+<template>
+<input v-model="inputText" placeholder="新增 todo" />
+// ​這邊的input會做，輸入的文字會雙向綁定到 js裡面的inputText
+// ​你在 input 打字 → inputText 會跟著變
+// 然後如果再程式裡面改​inputText → input 內容也會跟著變
+// 而 ​placeholder="新增 todo"，只是灰色提示文字，不會存進資料。
+// 在​JS 裡是 inputText.value
+// ​但在 template 裡可以直接寫 inputText
+
+<button @click="addTodo">新增</button>
+// 這邊​按下去就會呼叫addTodo函式
+// ​而是 Vue 的事件綁定
+// 意思等同原生 JS 的 addEventListener('click', ...)。​
+// ​函式​​clear裡面:function addTodo() 
+
+<ul>
+  <li v-for="(todo, index) in todos" :key="index">
+  // 而v-for，會將todos 是你的待辦陣列（例如 ['買牛奶','寫作業']
+  // Vue 會把陣列裡每一筆都渲染成一個 <li>
+  // todo：目前這一筆內容（例如 '買牛奶'）
+  // index：目前這一筆的位置（0, 1, 2…）
+  // 而key 是 Vue 用來「辨識每一列」的身份證
+  
+    {{ todo }}
+    // 而{{}}這邊大括弧是叫​插值語法，就是用來把資料塞進HTML
+    // 使用{{todo}}，把變數todo裡面的陣列引入過來
+    // 把目前這一筆待辦內容顯示出來
+    
+    <button @click="removeTodo(index)">刪除</button>
+    // 你點「刪除」
+    // 會呼叫 removeTodo(index)
+    // 把這一筆的位置丟進去
+    // todos.value.splice(index, 1)，就會刪掉那筆
+  </li>
+</ul>
+</template>
+```
+
+## reactive
+`reactive` 函數用於創建一個響應式的對象。但與 `ref` 不同的是，他接受一個普通 javascript 對象參數，並返回一個代理對象，通過這個代理對象，我們可以訪問和修改原始對象的屬性。
+
+當我們修改這個代理對象的屬性時，Vue 會自動追蹤這個修改，並在介面上同步更新。
+
+在說白一點就是，`reactive` 是用來建立一個`「會變的物件 / 陣列」`，而且會把`「整個物件 / 陣列」都變成可追蹤的狀態`。
+
+Vue 會自動追蹤裡面屬性的變化，而且`讀取與修改時不需要 .value`
+
+基礎範例:
+
+JS:
+
+```javascript
+// JAVASCRIPT
+<script set up>​
+import { reactive } from 'vue'
+
+const form = reactive({
+  name: '',
+  email: ''
+})
+
+form.name = 'JoJo'   
+form.email = 'test@gmail.com'
+</script>
+```
+
+HTML:
+
+```HTML
+// HTML
+<template>
+<p>{{ form.name }}</p>
+<p>{{ form.email }}</p>
+</template>
+```
+
+表單範例:
+
+JS:
+
+```javascript
+<script setup>
+import { reactive } from 'vue'
+
+const form = reactive({
+// 建立一個 reactive 表單物件
+// 建立一個叫 form 的變數
+// 有兩個欄位：name 跟 email，一開始都是空字串。
+
+  name: '',
+  email: ''
+  // 但是form 是 reactive 物件
+  // 如果form.name = 'xxx'、form.email = 'yyy'的話
+  // Vue 就會知道資料變了，畫面會自動更新
+  // 不需要 .value（這是 reactive 跟 ref 最大的差別的地方）
+  
+})
+
+function fillDemo() {
+// ​填入範例資料
+// 這邊在做的事情是:
+// ​把 form.name 改成「小明」
+// ​把 form.email 改成「jojo@example.com」
+// 因為​form 是 reactive
+// ​input（如果用 v-model="form.name"）會自動更新
+// 畫面顯示的文字也會跟著變
+  form.name = '小明'
+  form.email = 'joe123456@gmail.com'
+}
+
+function clear() {
+// ​做清空表單
+// 把表單資料全部重設成空字串：
+// 名字清空
+// Email 清空
+// input 會變空
+// 畫面顯示也會變空
+  form.name = ''
+  form.email = ''
+}
+</script>
+```
+
+HTML:
+
+```HTML
+<template>
+  <input v-model="form.name" placeholder="name" />
+  
+  // 這邊是個輸入框
+  // v-model="form.name" 是 雙向綁定
+  // 如果在輸入框打字 → form.name 會立刻跟著變
+  // 在JS 裡改 form.name（例如按「填入範例」或「清空」）
+  // 輸入框內容也會立刻更新
+  // placeholder="name" 只是灰色提示字，不會存進資料。
+  
+  <input v-model="form.email" placeholder="email" />
+  
+  // v-model="form.email" 是 雙向綁定
+  // 如果在輸入框打字 → form.email 會立刻跟著變
+  // 在JS 裡改 form.email（例如按「填入範例」或「清空」）
+  // 輸入框內容也會立刻更新
+  // placeholder="email" 只是灰色提示字，不會存進資料。
+
+  <p>姓名：{{ form.name }}</p>
+  
+  // {{ }} 是插值語法：把資料顯示在畫面上
+  // 只要form.name 改變（輸入框打字 or JS 修改）
+  // 這段文字就會自動更新
+  
+  <p>Email：{{ form.email }}</p>
+  
+  // 只要form.email 改變（輸入框打字 or JS 修改）
+  // 這段文字就會自動更新
+
+  <button @click="fillDemo">填入範例</button>
+  
+  // 而這邊按一下就執行 fillDemo()
+  // 這邊​按下去就會呼叫fillDemo函式
+  // ​而是 Vue 的事件綁定
+  // 意思等同原生 JS 的 addEventListener('click', ...)。​
+  // ​函式​​clear裡面:function fillDemo() 
+  // 而fillDemo裡面是:
+  // function fillDemo() {
+  // form.name = '小明'
+  // form.email = 'joe123456@gmail.com'
+  // }
+  // 兩個 input 會自動被填入（因為 v-model 連動）
+  // 下面兩行 <p> 也會同步變成新的值
+  
+  <button @click="clear">清空</button>
+  
+  // 而這邊按一下就執行 clear()
+  // 這邊​按下去就會呼叫clear函式
+  // ​而是 Vue 的事件綁定
+  // 意思等同原生 JS 的 addEventListener('click', ...)。​
+  // ​函式​​clear裡面:function clear()
+  // 而clear裡面是:
+  // function clear() {
+  // form.name = ''
+  // form.email = ''
+  // }
+  // 兩個 input 會自動被填入（因為 v-model 連動）
+  // 下面兩行 <p> 也會同步變成新的值
+
+</template>
+```
+
+清單範例:
+
+JS:
+
+```javascript
+<script setup>
+import { reactive } from 'vue'
+
+const state = reactive({
+
+// 建立一個叫 state 的變數，裡面有兩個東西
+// 這邊有一個叫​state.inputText：輸入框目前的文字（字串）
+// 這邊還有一個叫​state.todos：待辦清單（陣列）
+// 但是​因為 state 是 reactive，Vue 會追蹤：state.inputText 的變化
+// state.todos 陣列內容的變化（push/splice）
+// 所以畫面會自動更新
+// 讀寫都不用 .value
+
+  inputText: '',
+  todos: ['買牛奶', '寫作業']
+})
+
+function addTodo() {  
+//新增待辦
+
+  const text = state.inputText.trim()
+  
+  // 這邊會取出state裡面的inputText裡面的東西
+  // 而trim()會將文字前後空白給去掉
+  
+  if (!text) return
+  // 這邊設定條件
+  // 這邊設定條件if，如果text是空的字串''，就代表false（falsy）
+  // 而這邊! 的意思是「取反」
+  // 如果!true → false 、 !false → true
+  // !text 等同於：「text 這個值如果是 falsy（像空字串）就會變成 true」
+  // 比如:text = ""，!text 這邊就會變成true  → 會進 if → return
+  // 如果text = "hi" ， 是truthy
+  // 那這邊!text 就會變成false → 不進 if → 繼續往下新增
+
+
+  state.todos.push(text)
+  // 取變數state裡面的todos
+  // 會push加進去，把 text 加到 todos 陣列的最後面
+  // 把新文字加到 state 陣列尾端
+  // 因為是 reactive，Vue 會追蹤到陣列變了，v-for 會自動多一行。
+  
+  state.inputText = ''
+  // 新增完後把 input 清掉，讓你可以打下一筆。
+}
+
+function removeTodo(index) {
+// ​index 是那筆 todo 在陣列的位置（0、1、2…）
+// splice(index, 1) 的意思是：從 index 開始刪掉 1 個
+// 就會像這樣例如:​state.todos = ['買牛奶', '寫作業', '運動']
+// removeTodo(1)
+// 變成 ['買牛奶', '運動'] ，而splice會刪除'寫作業'這段(0,1)的(1)那段
+
+  state.todos.splice(index, 1)
+  
+}
+</script>
+```
+
+HTML:
+
+```HTML
+<template>
+  <input v-model="state.inputText" placeholder="新增 todo" />
+  // 這是一個 input
+  // v-model="state.inputText" 
+  // 是雙向綁定你在輸入框打字 → state.inputText 會跟著變
+  // 你在 JS 裡寫 state.inputText = '' → 輸入框會被清空
+  // 這邊因為state 是 reactive，所以你直接用 state.inputText 就好了
+
+  <button @click="addTodo">新增</button>
+  // 點一下就執行 addTodo()
+  // 等同於原生 JS 的 addEventListener('click', addTodo)
+  // 而你的 addTodo() 會：
+  // 讀 state.inputText
+  // push 進 state.todos
+  // 清空 state.inputText
+  // 所以畫面會：
+  // 清單多一筆
+  // 輸入框清空
+
+  <ul>
+    <li v-for="(todo, index) in state.todos" :key="index">
+    // 使用v-for 把 state.todos 一筆一筆變成畫面
+    // state.todos 是陣列，例如：['買牛奶', '寫作業']
+    // v-for 會幫你跑迴圈，對每一筆：todo：這一筆的內容（字串）
+    // index：這一筆的位置（0, 1, 2…）
+    // 每一筆都產生一個 <li>
+    // key="index"在做key 是 Vue 用來辨認每一列的「身份證」
+
+      {{ todo }}
+    // 而{{}}這邊大括弧是叫​插值語法，就是用來把資料塞進HTML
+    // 使用{{todo}}，把變數todo裡面的陣列引入過來
+    // 把目前這一筆待辦內容顯示出來 
+    
+      <button @click="removeTodo(index)">刪除</button>
+     // 點下去會呼叫：removeTodo(index)
+     // 把目前這一筆的位置丟給 JS
+     // 從陣列中刪掉那一筆
+     // 因為是 reactive，Vue 會自動更新畫面
+     // 該 <li> 會消失
+
+    </li>
+  </ul>
+</template>
+```
+
+而reactive跟ref差別在於，比如說
+
+- ref 版本：todos.value.push(...) 會需要.value
+- reactive 版本：state.todos.push(...) 而reactive不用
+
+
+## watch
+
+`watch` 就是偵聽器，函數用於`監聽一個響應式數據`的變化時，並在數據變化時執行指定的回調函數。他接受兩個參數:要監聽的`數據`和`回調函數`。當`被監聽的數據發生改變時，回調函數會被觸發，它可以在回調函數中執行一些邏輯操作。`
+
+白話來說:是`「資料變了就做事情」`。
+
+範例:
+
+JS:
+
+```javascript
+// JAVASCRIPT
+
+<script setup>
+import { ref, watch } from 'vue'
+import axios from 'axios'
+
+const keyword = ref('')
+// 這邊設定​keyword，來做搜尋框的關鍵字，就是使用者輸入什麼
+
+const results = ref([])
+// 這邊設定results，來做​搜尋結果列表，就是API 回來的資料
+
+
+
+watch(keyword, async (newVal, oldVal) => {
+// 使用watch去監聽變數keyword
+// 如果​keyword的值變了，就執行後面的callback
+// 而這邊async 裡面的參數 n​ewVal / oldVal是：
+// newVal：變更後的新值（新的 keyword）
+// oldVal：變更前的舊值（之前的 keyword）
+
+
+  if (!newVal.trim()) {
+  // 設定條件:
+  // 如果使用者把輸入清空（或只打空白）
+  // 就把results 清空
+  // 就直接return 直接結束
+  // 而trim() 會去掉前後空白
+    results.value = []
+    
+    return
+  }
+  const res = await axios.get(`/api/search?q=${encodeURIComponent(newVal)}`)
+  // 這邊設定res變數，來使用axios來取得api資料
+  results.value = res.data
+  // 使用前面results.value，來拿api res.data裡面的資料
+  
+})
+</script>
+```
+
+HTML:
+
+```HTML
+// HTML
+
+<template>
+  <div>
+    <h2>搜尋</h2>
+
+    <!-- 搜尋輸入框 -->
+    <input
+      v-model="keyword"
+      placeholder="輸入關鍵字搜尋..."
+    />
+    // 這邊是v-model="keyword"：雙向綁定
+    // 使用在輸入框打字 → keyword 的值會更新
+    // 而keyword 的值更新
+    // 你寫的 watch(keyword, ...) 就會被觸發 
+    // 去打 API
+    
+
+    <!-- 如果沒有結果 -->
+    <p v-if="results.length === 0 && keyword.trim()">
+      沒有搜尋結果
+    </p>
+    // 這邊設定條件if ,如果results.length === 0
+    // 目前結果是空陣列（沒有任何結果）以及使用者有輸入內容（不是空字串或只打空白）
+    // 而.trim()，因為results 預設就是空陣列，會馬上顯示「沒有搜尋結果」
+    // 使用者真的有搜尋（有輸入）才會顯示「沒有搜尋結果」
+
+    <!-- 顯示搜尋結果 -->
+    <ul>
+      <li v-for="(item, index) in results" :key="index">
+      // 由於results是一個陣列
+      // 每一筆結果都產生一個 <li>，而item 代表每一筆資料
+      // index 代表 每一筆的位置（0, 1, 2...）
+      
+        {{ item }}
+        // 而這邊使用{{ item }}，來把item把每一筆結果顯示出來
+        // 如果 res.data 是字串陣列：直接顯示沒問題
+        // 如果你的 res.data 是物件陣列：你要顯示欄位
+
+      </li>
+    </ul>
+  </div>
+</template>
+```
+
+
+
+## computed
+`computed` 函數用於創建一個計算屬性。它接受一個`計算函數作為參數`，並返回一個響應式對象。當計算函數中依賴的響應式數據發生改變時，Vue會重新計算屬性的值。計算屬性可以像普通屬性一樣在模板中使用，而且在多個模板中只會計算一次。
+
+做一個「從其他資料算出來的值」，會自動更新、會快取。
+
+白話來說就是 : computed 是「衍生值」：它不是你手動維護的，而是從其他狀態算出來的結果。 Vue 會幫你：依賴變了就重算，如果沒變就不重算（快取）
+
+範例:
+
+JS:
+
+```javascript
+// JAVASCRIPT​
+import { ref, computed } from 'vue'
+
+const items = ref([
+  { name: 'shirt', price: 399, qty: 2 },
+  { name: 'hat', price: 199, qty: 1 }
+])
+
+const total = computed(() => {
+  return items.value.reduce((sum, item) => sum + item.price * item.qty, 0)
+})
+```
+
+模板:
+
+HTML:
+
+```HTML
+// HTML
+<template>
+<p>總價：{{ total }}</p>
+</template>
+```
+
+Todo 清單「數量統計」
+
+範例:
+
+JS:
+
+```javascript
+// JAVASCRIPT​
+<script setup>
+import { reactive, computed } from 'vue'
+
+const state = reactive({
+// 建立一個 reactive 物件 state
+// ​因為是 reactive，所以你之後改 state.todos 或 state.inputText
+
+  todos: ['買牛奶', '寫作業', '運動'],
+  // 有state.todos：待辦清單（陣列），先放三筆資料
+  
+  inputText: ''
+  // ​state.inputText：輸入框目前輸入的字（字串），一開始空白
+})
+
+const todoCount = computed(() => {
+// 而這邊設定變數​todoCount，使用computed去計算
+// 這邊​computed在做
+// ​每次新增要 count++
+// 每次刪除要 count--
+// ​你只要改 state.todos，todoCount 就會自動更新
+// ​todoCount 是「從 state.todos 算出來的值」＝待辦數量。
+// 讀取 state.todos.length
+// ​回傳目前有幾筆 todo
+// todoCount 會自動更新 → 畫面顯示也會跟著變。
+// 而​computed 會自動更新 + 有快取
+  return state.todos.length
+})
+
+function addTodo() {
+// 做​新增一筆 todo
+  const text = state.inputText.trim()
+  // 設定變數text 去接住state.inputText.trim()的結果
+  // trim()會刪除前後空白
+  
+  if (!text) return
+  // 這邊設定條件
+  // 這邊設定條件if，如果text是空的字串''，就代表false（falsy）
+  // 而這邊! 的意思是「取反」
+  // 如果!true → false 、 !false → true
+  // !text 等同於：「text 這個值如果是 falsy（像空字串）就會變成 true」
+  // 比如:text = ""，!text 這邊就會變成true  → 會進 if → return
+  // 如果text = "hi" ， 是truthy
+  // 那這邊!text 就會變成false → 不進 if → 繼續往下新增
+  
+  state.todos.push(text)
+  // 這邊因為 state.todos 是 reactive 追蹤的陣列
+  // 所以畫面會自動多一列
+  // 會把新項目push到陣列最後面
+  
+  state.inputText = ''
+  // 新增成功後，把輸入框內容清空
+  // 如果<input v-model="state.inputText">
+  // 畫面 input 也會跟著變空
+}
+
+function removeTodo(index) {
+// ​index 是要刪掉那筆的「位置」（0, 1, 2…）
+// splice(index, 1) 的意思：splice會 從 index 開始，刪掉 1 個元素
+
+  state.todos.splice(index, 1)
+  // 例如:state.todos = ['買牛奶', '寫作業', '運動']
+  // removeTodo(1)
+  // 結果：['買牛奶', '運動']，刪掉'寫作業'[0,1,2]，裡面的1那段。
+  
+}
+</script>
+```
+
+HTML:
+
+```HTML
+// HTML
+<template>
+ <p>目前待辦數量：{{ todoCount }}</p>
+  // {{ todoCount }} 是插值語法：把資料顯示到畫面
+  // todoCount 是你用 computed 算出來的值
+  // 就是這段const todoCount = computed(() => state.todos.length)
+
+  <input v-model="state.inputText" placeholder="新增 todo" />
+  // v-model="state.inputText" 是雙向綁定你在 input 打字
+  // state.inputText 會跟著變
+  // 你在 JS 裡寫 state.inputText = '' → input 會自動清空
+  // placeholder="新增 todo" 只是提示文字
+  // 因為state 是 reactive，所以直接用 state.inputText
+  // 所以不用 .value
+  
+  <button @click="addTodo">新增</button>
+  // @click="addTodo" 表示：按下按鈕就執行 addTodo()
+  // 而這邊按一下就執行 addTodo()
+  // 這邊​按下去就會呼叫addTodo函式
+  // ​而是 Vue 的事件綁定
+  // 意思等同原生 JS 的 addEventListener('click', ...)
+  // 而addTodo()會讀取 state.inputText → 去掉空白、檢查是不是空字串
+  // push 到 state.todos把 → state.inputText 清空
+
+  <ul>
+    <li v-for="(todo, index) in state.todos" :key="index">
+    // state.todos 是陣列，例如：['買牛奶','寫作業']
+    // v-for 會幫你「跑迴圈」：todo：目前這一筆的內容
+    // index：目前這一筆在陣列中的位置（0,1,2...）
+    // key="index"是key 是 Vue 用來辨識每一列的「身份證」
+
+
+      {{ todo }}
+      
+      
+      <button @click="removeTodo(index)">刪除</button>
+      // @click="removeTodo(index)" 表示：按下按鈕就執行 removeTodo(index)
+      // 而這邊按一下就執行 removeTodo(index)
+      // 這邊​按下去就會呼叫removeTodo(index)函式
+      // ​而是 Vue 的事件綁定
+      // 而js會做state.todos.splice(index, 1)
+      // 該筆從陣列中被刪掉
+      // 因為 state.todos 是 reactive：畫面列表會少一筆
+      // todoCount 也會自動減 1
+      
+    </li>
+  </ul>
+</template>
+```
+
+購物車總價
+
+範例:
+
+JS:
+
+```javascript
+// JAVASCRIPT
+<script setup>
+import { ref, computed } from 'vue'
+
+const items = ref([
+// 這邊​建立一個叫 items 的 ref
+// 裡面有陣列資料
+// ​陣列每一筆是商品物件：
+// name：商品名稱
+// price：單價
+// qty：數量
+
+  { name: 'T-shirt', price: 399, qty: 2 },
+  { name: 'Hat', price: 199, qty: 1 }
+])
+
+const totalPrice = computed(() => {
+// 這邊使用變數​totalPrice來接住計算出來的結果
+// 那這邊的computed會​做totalPrice 完全可以由 items 算出來
+// ​
+
+  return items.value.reduce((sum, item) => {
+  // 使用reduce來作業，使用變數item.value來拿陣列​
+  // 將從 items 裡的每個商品，計算：
+  // price × qty，全部加起來 = 總價
+  
+  
+    return sum + item.price * item.qty
+    // sum代表目前累加的總和
+    // 而item：陣列中的每一個商品
+    // 這邊就是將最後回傳「全部商品的總金額」
+  }, 0)
+})
+
+function addQty(index) {
+// ​index 是你要加數量的那個商品位置（0, 1, 2…）
+// items.value[index] 取出該商品物件
+// .qty++ 把數量 +1
+
+  items.value[index].qty++
+}
+</script>
+```
+
+HTML:
+
+```HTML
+// HTML
+<template>
+  <ul>
+    <li v-for="(item, index) in items" :key="index">
+    // 這邊的item = const items = ref([
+    // { name: 'T-shirt', price: 399, qty: 2 },
+    // { name: 'Hat', price: 199, qty: 1 }
+    // ])
+    // 而v-for 會「跑迴圈」，對 items 裡的每一筆資料產生一個 <li>
+    // item 代表目前這一筆商品物件
+    // index 代表目前這一筆在陣列中的位置（0、1、2…）
+
+      {{ item.name }} - {{ item.price }} 元 × {{ item.qty }}
+      // {{ }} 是插值語法，用來把資料顯示在畫面 
+      // 顯示格式：商品名稱 、 單價 、 乘上數量
+      // 例如這邊會顯示:
+      // T-shirt - 399 元 × 2
+      // Hat - 199 元 × 1
+      // 當你之後改 item.qty，這一行也會自動更新
+      
+      <button @click="addQty(index)">+1</button>
+      // 而這變@click="addQty(index)" 表示：點一下按鈕
+      // 呼叫 addQty(index)
+      // 把目前這一筆的 index 傳進去
+      // 而這邊的script :function addQty(index) {
+      // items.value[index].qty++
+      // }
+      // 你點某一筆的 +1，addQty(index) 把該商品的 qty +1
+      // 因為 items 是 ref（響應式），Vue 偵測到資料變了
+      // 畫面中：{{ item.qty }} 會更新
+      // totalPrice（computed）會重新計算
+
+    </li>
+  </ul>
+
+  <p>總價：{{ totalPrice }} 元</p>
+  // 顯示的 computed：總價
+</template>
+```

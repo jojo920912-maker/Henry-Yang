@@ -1,0 +1,137 @@
+---
+title: "認識 javascript type"
+sidebar_title: "認識 javascript type"
+tags: [javascript type]
+---
+
+## 提要
+`javascript` 有分兩大類型別:`原始型別 (Primitive Types) 和物件型別 (Object Types)`兩種，而原始型別包含`string、number、boolean、null、undefined、Symbol`，物件型別則是包含`陣列、函式、日期`等。
+
+
+這次我們來了解原始型別:
+
+原始型別的定義是「單一值」的小零件（字、數字、是/否…），他們跟物件型別不同，是不可變的，且賦值是傳值，修改一個部會影響另一個。
+
+
+### number(數值)
+
+就是數字，像是:整數:`123456`、`小數:3.14`、也包含特殊值:`NaN`、`Infinity`，都是屬於 `number`，比如:`NaN` 會出現在 `javascript` 自動轉型後的結果無法轉換為數字。
+
+
+
+### string(字串)
+
+`字串`是指，只要是`「字」`或`「一串文字」`會被用`" "`跟`' '`包起來，都是叫 `string`。
+
+舉例:
+
+```javascript
+let zhe = "我叫阿哲"
+
+console.log(zhe)  //印出"我叫阿哲"
+```
+
+### boolean(布林)
+
+布林就是指，只有兩種答案，`true(對、是、正確) or false(否、不對、否定)`。
+
+```javascript
+let isLightOn = true
+
+if (isLightOn) {
+  console.log("燈是亮的")
+} else {
+  console.log("燈是關的")
+}
+
+//印出燈是亮的​
+```
+
+### undefined(未定義)
+
+`undefined` 跟 `null` 一樣表示空值，`undefined` 會出現像是已經宣告，但是尚未賦予值的變數上。也就是說對系統來說，他不知道變數的值是什麼，所以讀取該變數的時候會出現 `undefined`。
+
+```javascript
+let zhe
+
+console.log(zhe)  //系統印出undefined
+```
+
+### NaN/null(空值)
+
+而 `null` 是會手動賦予給變數一個空值，表示"這邊是個空值"。
+
+而 `NaN` 則是屬 `number` 型別的特殊值，但是用來代表它不是一個數字，如果有出現 `NaN` 代表可能有轉換失敗的情況。
+
+null:
+
+```javascript
+let user = { name: "Joe", role: "admin" }
+
+function logout() {
+  user = null  //表示已登出
+}
+
+console.log("登出前",user)
+logout()
+console.log('登出後',user)
+
+//印出:​
+//登出前 { name: 'Joe', role: 'admin' }
+//登出後 null
+```
+
+NaN:
+
+```javascript
+let aa = "hello"
+
+let bb = Number(aa)
+
+console.log(bb)  //跳出NaN
+```
+
+### Symbol
+`Symbol` 是用來產生所謂那個 `"獨一無二"` 那個 `"唯一"` 的值，一旦啟用就不能更改，而就算給他同樣的名字，結果還是不同。是用來避免 `"撞名"` 跟 `"衝突"` 的。
+
+範例:
+
+```javascript
+const classMate = {
+  '宜蓁' : { score: 70, sleep: '3:00', drink: true },
+  'chita' : { score: 90, sleep: '20:00', drink:false },
+  '宜蓁' : { score: 100, sleep: '19:00', drink: false },
+}
+
+console.log(classMate)
+
+//印出​
+{
+  '宜蓁': { score: 100, sleep: '19:00', drink: false },
+  'chit' { score: 90, sleep: '20:00', drink: false }
+}
+```
+
+系統結果顯示，`第二個宜蓁`覆蓋掉`第一個宜蓁`了。但是我們又想要`兩個宜蓁`出現的話。
+
+Symbol:
+
+```javascript
+const classMate = {
+  [Symbol('宜蓁')] : { score: 70, sleep: '3:00', drink: true },
+  [Symbol('chita')] : { score: 90, sleep: '20:00', drink:false },
+  [Symbol('宜蓁')] : { score: 100, sleep: '19:00', drink: false },
+}
+
+
+console.log(classMate)
+
+//就會印出:
+​{
+  [Symbol(宜蓁)]: { score: 70, sleep: '3:00', drink: true },
+  [Symbol(chita)]: { score: 90, sleep: '20:00', drink: false },
+  [Symbol(宜蓁)]: { score: 100, sleep: '19:00', drink: false }
+}
+```
+
+結果都會印出來。但是定義屬性鍵名的時候一定要將 `Symbol` 值放在中括號 `[]` 裡面，否則屬性的鍵名會當做字串而不是 `Symbol` 值

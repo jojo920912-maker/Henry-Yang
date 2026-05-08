@@ -1,0 +1,146 @@
+---
+title: "認識Vue裡的模板引用"
+sidebar_title: "認識Vue裡的模板引用"
+tags: [template reference]
+---
+
+## 提要
+
+那我們先來了解什麼是認識 `Vue 裡的模板引用`?
+
+模板引用的意思是:允許我們在 `Vue 的組件的模板中`標記`一個 DOM 元素`或`子組件`，並在 `setup 選項中去訪問它`。
+
+我們可以說白一點就是:我們在 template 裡先幫`某個 DOM 元素`或`子元件`貼上一個「名字」，等畫面真的被渲染出來後，就可以在 `<script setup>` 裡用這個名字拿到它。
+
+
+
+我們來看基本用法:
+
+```javascript
+<script setup> 
+import { ref, onMounted } from 'vue' 
+// ​這邊onMounted的意思是:等畫面真的渲染好了，我再做這件事。
+// ​這邊import ... from 'vue'的意思:從 Vue 這個套件裡面，把工具拿出來用。
+// ​ref：做「響應式資料」要用的容器
+// ​onMounted：註冊「畫面渲染完成後要做的事」
+
+// 宣告一個 ref 來存放元素引用 
+const inputRef = ref(null) 
+
+onMounted(() => { 
+  // 元件掛載後，inputRef.value 會是 DOM 元素 
+  // onMounted在做的事情是等畫面已經渲染完成
+  // 在來使用inputRef.value
+  inputRef.value.focus() 
+  // inputRef.value 會是那個 input 的 DOM 元素
+  // 所以可以呼叫它的 focus() 方法
+  
+}) 
+
+</script>
+```
+
+```HTML
+<template>
+ 
+  // <!-- ref 屬性的值對應到變數名稱 -->
+  
+  <input ref="inputRef" type="text"> 
+  // 使用input來放進inputRef.value
+  // 也就是說inputRef.value = 那個 input 的 DOM 元素
+  
+</template>
+```
+
+這邊只有在元件掛載後（onMounted），ref 才會被賦值。在 onMounted 之前，ref 的值是 null。
+
+
+
+那它可以用來比如說操作原生DOM、存取多個元素等等的地方。
+
+
+
+那來看範例:
+
+操作原生DOM範例:
+
+``` HTML
+<template>
+  <input ref="inputRef" type="text" placeholder="输入内容">
+  // 在template 裡的 input 用 ref="inputRef" 取名
+  // 而渲染完成之後Vue 會把「這個 input 的 DOM 元素」放進 inputRef.value
+  <button @click="focusInput">聚焦输入框</button>
+  // 去綁定函式focusInput，每點擊一次就呼叫一次
+</template>
+```
+```javascript
+<script setup>
+import { ref } from 'vue';
+
+const inputRef = ref(null);
+// 使用一個變數​inputRef，要來裝input 的 DOM 元素
+// 一開始是​null，因為畫面還沒渲染出來
+
+const focusInput = () => {
+// 宣一個函式​focusInput，每案一次按鈕就會呼叫它一次
+  inputRef.value.focus();
+  // inputRef.value：那個 input 的 DOM 元素
+};
+</script>
+```
+
+使用ref存取多個元素範例:
+
+```HTML
+<template>
+  <div v-for="(item, index) in list" :key="index" ref="itemRefs">
+    {{ item }}
+    // 使用v-for，會跑list陣列每個元素，產生多個div
+    // 而ref="itemRefs"：每一個 div 都標記同一個 ref 名稱
+  </div>
+  <button @click="logElements">查看所有元素</button>
+  // 去綁定函式logElements，每點擊一次就呼叫一次
+</template>
+```
+```javascript
+<script setup>
+import { ref, onMounted } from 'vue';
+
+const list = ref(["Vue", "React", "Angular"]);
+const itemRefs = ref([]);
+// 這邊先使用變數 itemRefs，裝一個空陣列，要用來裝多個DOM元素
+
+onMounted(() => {
+// ​onMounted來做畫面渲染完成後再印
+  console.log(itemRefs.value); 
+  // 印出itemRefs.value，裡面的元素
+});
+
+const logElements = () => {
+// 使用變數​logElements，來讓迴圈跑過每個 div DOM 元素
+// 並且印出每一個div的文字​
+  itemRefs.value.forEach(el => console.log(el.textContent));
+};
+</script>
+```
+
+存取setup()之外的數據:
+
+```javascript
+<script setup>
+import { getCurrentInstance, onMounted } from 'vue';
+
+onMounted(() => {
+// ​onMounted：等元件渲染完成
+  const instance = getCurrentInstance();
+  // getCurrentInstance()會做的事情是，取得目前元件的「內部實例物件」
+  console.log(instance.refs); 
+  // 去拿取template裡面的ref
+});
+</script>
+```
+```HTML
+<template>
+  <input ref="inputRef" type="text">
+</template>
+```

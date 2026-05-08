@@ -1,0 +1,156 @@
+---
+title: "了解Vue Router、pinia"
+sidebar_title: "了解Vue Router、pinia"
+tags: [Vue Router, pinia]
+---
+
+## 了解 Vue Router
+
+首先，我們要先來了解 `Vue Router` 在幹嘛，以及為什麼會需要 Vue Router ~
+
+我們先來講講為什麼需要他~
+
+
+使用者在操作網頁時，上方通常會有導覽列，點擊不同的項目就會切換到不同的頁面。在 Vue 這種單頁應用（SPA）中，畫面切換並不會真的重新載入整個頁面，而是動態替換顯示的內容。這時候我們就需要 Vue Router，它負責將不同的 URL 路徑對應到對應的 component，讓使用者感覺像在換頁，但實際上只是在切換元件。
+
+
+
+### 使用 Vue Router
+那我們來看看我們要該怎麼做呢?
+
+我們先創一個 `router 的 js 檔案`，然後再裡面做一個 `export 一個變數 routes 去做一個陣列`，然後再物件裡面做 `{ path: '/路由的名字',  component: component的名稱 }`
+
+然後再上面像是 `import {ref, OnMounted`} 等等那些一樣，把那些 `component 給 import 過來`。
+
+![Vue router.photo(1)](/img/vue-router-photo/vue-router(1).webp)
+
+
+
+
+然後再去原來的 `index.js` 裡面的 `route 改成 routes` `(因為component名字我設定routes所以這邊把它改成 routes)`
+
+![Vue router.photo(2)](/img/vue-router-photo/vue-router(2).webp)
+
+
+
+
+
+之後再設定一個資料夾要放入要做的頁面，我這邊設定 `pages`
+
+![Vue router.photo(3)](/img/vue-router-photo/vue-router(3).webp)
+
+
+
+
+
+之後再 `app.vue 裡面的 template` 裡面輸入 `<RouterLink>`  `</RouterLink>` 然後再 `<RouterLink>` 的 `<>` 裡面放入 `to='/'` ，而 `to='/'` 的 `''`的裡面要放就是我們在 `routes` 裡面放的 `path= '/路由的名稱'` ， 然後最後再放上 `</RouterView>` 把他關起來。
+
+
+![Vue router.photo(4)](/img/vue-router-photo/vue-router(4).webp)
+
+
+那最後會長這樣:
+
+Test.vue 的檔案:
+
+我們在點選的時候，原本我們在 vue 裡面執行 npm run dev 之後會跑 localhost:5173 那我們點選 test 之後會發現後面多了 /test 路由變了。
+
+![Vue router.photo(5)](/img/vue-router-photo/vue-router(5).webp)
+
+
+
+TestWork.vue的檔案:
+
+我們在點選的時候，原本我們在 vue 裡面執行 npm run dev 之後會跑 localhost:5173 那我們點選 testWork 之後會發現後面多了 /testWork 路由變了。
+
+![Vue router.photo(6)](/img/vue-router-photo/vue-router(6).webp)
+
+
+
+Resume.vue的檔案:
+
+我們在點選的時候，原本我們在 vue 裡面執行 npm run dev 之後會跑 localhost:5173 那我們點選 resume 之後會發現後面多了 /resume 路由變了。
+
+(這邊放我的履歷表當範例)
+
+
+
+![Vue router.photo(7)](/img/vue-router-photo/vue-router(7).webp)
+
+
+
+
+
+## 了解 Vue pinia
+
+什麼是pinia呢?
+
+pinia是一個狀態管理工具，那簡單來說就是說我們創造一個所有元件都可以進行共享的資料倉庫。當今天我們要使用的時候，可以直接從那邊拿去資料直接進行使用。
+
+那今天我們為什麼會需要他呢? 我們今天在Vue裡面，因為元件之間資料傳送通常會需要使用到props，但是如果層級很深獲是跨頁面的話，相對來說就會比較麻煩。所以為了解決這件事情，所以就出現了pinia，而pinia的出現可以幫我們把資料放在一個Store裡面，那今天我們需要使用的時候只需要把它引入就好。
+
+### 使用 pinia
+範例:
+
+基本上在建立一份Vue的新專案的時候，Vue就會問你要不要導入pinia了
+
+那我們導入之後會出現一個 stores 的資料夾
+
+之後我們就這樣使用:
+
+```javascript
+export 一個變數'const' 名稱 = definestore 後面就坐箭頭函式 ('這邊是參數名稱', () => {
+
+而大括弧裡面就看要你要傳什麼資料出去，裡面可以做 ref、computed、function 等等的東西
+
+像我這邊有做一個 ref 裡面包陣列，陣列裡面包物件資料。
+
+然後有做一個 ref 裡面包空陣列 [] 要裝 push 資料進去。
+
+也有做一個 function 來做邏輯。
+```
+```javascript
+  const userHome = ref([
+    { id: 1, name: 'cellPhone', price: 6000},
+    { id: 2, name: 'ipad', price: 8000},
+    { id: 3, name: 'computer', price: 10000}
+  ])
+
+  const shoppingCart = ref([])
+
+  function userUseShoppingCart(product){
+    shoppingCart.value.push(product)
+  }
+然後做完之後記得一定要 return 出去那不然會拿不到資料
+
+  return { userHome, shoppingCart, userUseShoppingCart }
+}) // 一定要 return 把資料丟出去
+
+```
+
+![Vue router.photo(8)](/img/vue-router-photo/vue-router(8).webp)
+
+
+
+
+那我們要引入元件要怎麼引入呢?
+
+我們要先 `import` 然後再 `stores` 裡面的變數名稱
+
+之後再做一個變數來接住再 `stores` 裡面的`變數`，這樣就可以了。
+
+後面要做使用的話，像我因為這邊這個元件取名叫 `counter` 而 `store 裡面的陣列 ref` 的名稱叫 `userHome` ，所以我們要來取裡面的資料就使用 `counter.userHome[0].name` 來取裡面的資料。
+
+範例如下:
+
+元件:HomeView.vue
+
+![Vue router.photo(9)](/img/vue-router-photo/vue-router(9).webp)
+
+
+元件:CartView.vue
+
+![Vue router.photo(10)](/img/vue-router-photo/vue-router(10).webp)
+
+
+

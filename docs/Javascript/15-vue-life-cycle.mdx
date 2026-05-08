@@ -1,0 +1,122 @@
+---
+title: "認識Vue裡的生命週期"
+sidebar_title: "認識Vue裡的生命週期"
+tags: [vue life cycle]
+---
+
+
+## 了解 vue 生命週期
+
+了解 Vue 的生命週期的規律跟意思。
+
+我們就要先來看 `Vue 的生命週期階段:
+
+## 1. setup()
+宣告 `reactive / ref`、`注入 store`，設定所有初始能量。→ 此時元件尚未渲染，但狀態樹已生成。
+
+說白一點:
+- `發生時機`：元件「剛被建立」，但 DOM 還沒出現
+- `適合做`：初始化資料、宣告 ref/reactive、computed、watch、定義函式、準備 API 參數
+- `不適合做`：直接抓 DOM（畫面還沒渲染）
+
+
+## 2. onBeforeMount
+DOM 尚未出現在畫面中。可以在這裡做最後預備或初始判斷。
+
+- `發生時機`：第一次要把畫面掛到 DOM 前。通常可以直接用 onMounted 比較實際
+
+## 3. onMounted
+
+元件正式出現在頁面上！這時候才能安全地`操作 DOM`、`呼叫 API`、`啟動監聽`。
+
+- `發生時機`：元件`已經第一次渲染完成`、`DOM 已經出現`
+- 可以做:
+- `打 API 取得初始資料（列表、使用者資料…）`
+- `操作 DOM（例如 focus input、讀取元素寬高）`
+- `設定事件監聽（window scroll / resize）`
+- `開定時器（setInterval）`
+
+
+## 4. onBeforeUpdate / onUpdated
+
+資料改變 → 頁面要重新渲染。在 onBeforeUpdate 先暫停舊能量（如清除動畫），
+在 onUpdated 再重新開啟（例如重啟動畫或更新視覺效果）。
+
+- `發生時機`：元件要被移除前
+- `適合做`：清理工作（cleanup）
+- 例如:
+-- `移除事件監聽 window.removeEventListener`
+-- `clearInterval / clearTimeout`
+-- `停止訂閱（例如 websocket）`
+
+## 5. onBeforeUnmount / onUnmounted
+
+元件即將消失，釋放所有監聽器、計時器與全域綁定，否則殘留的魔力（setInterval、window 事件）可能導致錯誤或記憶體洩漏。
+- `發生時機`：元件已經被移除
+- `適合做`：最後清理（通常 cleanup 放 before/unmounted 都可）
+
+
+也就說:
+
+- `建立中（Creation / Setup）`：資料、ref、computed…
+- `掛載（Mounting）`：第一次把模板渲染到 DOM 上（我們才能抓到畫面元素）
+- `更新（Updating）`：資料變了 → 重新渲染畫面
+- `卸載（Unmounting）`：元件被移除（離開頁面 / v-if 變 false / 換路由）
+
+
+什麼是生命周期:
+生命週期就像`元件的呼吸與心跳`。
+
+若你在錯誤的時間點`執行請求、操作 DOM 或監聽事件可能會導致`:
+
+- 資料可能還沒載入完畢，導致渲染失敗
+- 頁面切換後仍執行 setInterval → 記憶體洩漏
+- watch 寫錯會導致無限循環或效能暴衝
+
+
+
+
+我們直接來看範例:
+
+```javascript
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+
+const count = ref(0)
+
+// 元件「出現」在畫面後會執行
+onMounted(() => {
+// 使用onMounted讓元件先出現渲染了​
+// ​而onMounted會讓元件出現在頁面上!
+  console.log('元件已經出現在畫面上了！')
+  // 印出'元件已經出現在畫面上了！'
+})
+
+// 元件「離開」畫面前會執行
+onUnmounted(() => {
+// 使用​onUnmounted如果元件已經被移除
+// ​onUnmounted會做最後的清理
+  console.log('元件要被移除了，做清理！')
+  // 印出'元件要被移除了，做清理！'
+})
+
+function add() {
+  count.value++
+  // 被<button @click="add">+1</button>
+  // 被按鈕點擊一次，count就會+1
+}
+</script>
+```
+
+```HTML
+<template>
+  <div>
+    <p>目前數字：{{ count }}</p>
+    // 綁定變數count
+    <button @click="add">+1</button>
+    // 呼叫函式'add'，來做按鈕，每點擊一次count會+一次
+  </div>
+</template>
+```
+
+

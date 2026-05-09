@@ -28,11 +28,14 @@ align-self
 order
 
 flex (flex-grow、flex-shrink、flex-basis)
-第一個:display:
-
-還沒加入flex之前的樣式會是像圖片這樣，呈現縱向
 ```
 
+
+## display:flex
+
+還沒加入flex之前的樣式會是像圖片這樣，呈現縱向
+
+![flex.photo(1)](/img/flex-and-grid/flex1.webp)
 
 
 範例完整程式碼如下:
@@ -195,20 +198,10 @@ flex (flex-grow、flex-shrink、flex-basis)
 
 加入之後的樣式會像圖下這樣:
 
-
-
-
+![flex.photo(2)](/img/flex-and-grid/flex2.webp)
 
 
 但我們加入flex之後文字就會變成橫向的
-
-
-
-
-
-
-
-
 
 
 
@@ -359,11 +352,7 @@ order預設值為0，它可以重新定義內元件的排列順序，順序會�
 
 flex-grow:空間有剩時，這個元素要「放大多少比例」去吃掉多餘空間。
 
-
-
 flex-shink:空間不夠時，這個元素要「縮小多少比例」來配合容器。
-
-
 
 flex-basis:主軸方向上的「初始大小」。
 
@@ -451,7 +440,9 @@ minmax()  //可將值限定在某區間，傳入兩個參數，最小值與最�
 
 結果會長成圖片這樣子
 
+結果會長成圖片這樣子
 
+![grid1](/img/flex-and-grid/grid1.webp)
 
 
 ### repeat - 重複欄位
@@ -477,7 +468,9 @@ minmax()  //可將值限定在某區間，傳入兩個參數，最小值與最�
 
 會變成這樣:
 
+結果會長成圖片這樣子
 
+![grid2](/img/flex-and-grid/grid2.webp)
 
 
 ### grid-auto-rows - 自動產生列
@@ -504,7 +497,7 @@ minmax()  //可將值限定在某區間，傳入兩個參數，最小值與最�
 
 會出現如附圖這樣:
 
-
+![grid3](/img/flex-and-grid/grid3.webp)
 
 
 ### grid-auto-columns - 自動產生欄
@@ -530,7 +523,7 @@ minmax()  //可將值限定在某區間，傳入兩個參數，最小值與最�
 
 會出現如附圖這樣:
 
-
+![grid4](/img/flex-and-grid/grid4.webp)
 
 
 ### gap - 產生間距
@@ -556,7 +549,7 @@ minmax()  //可將值限定在某區間，傳入兩個參數，最小值與最�
 
 會出現如附圖這樣:
 
-
+![grid5](/img/flex-and-grid/grid5.webp)
 
 
 ### justify-items - 格子內元素水平對齊
@@ -582,7 +575,7 @@ minmax()  //可將值限定在某區間，傳入兩個參數，最小值與最�
 ```
 會出現如附圖這樣:
 
-
+![grid6](/img/flex-and-grid/grid6.webp)
 
 
 ### align-items - 格子內元素垂直對齊
@@ -608,7 +601,7 @@ minmax()  //可將值限定在某區間，傳入兩個參數，最小值與最�
 ```
 會出現如附圖這樣:
 
-
+![grid7](/img/flex-and-grid/grid7.webp)
 
 
 ### align-content - 整個 Grid 垂直對齊容器
@@ -638,7 +631,7 @@ minmax()  //可將值限定在某區間，傳入兩個參數，最小值與最�
 ```
 會出現如附圖這樣:
 
-
+![grid8](/img/flex-and-grid/grid8.webp)
 
 
 ### grid-auto-flow - 自動填法
@@ -666,3 +659,4 @@ minmax()  //可將值限定在某區間，傳入兩個參數，最小值與最�
 ```
 會出現如附圖這樣:
 
+![grid9](/img/flex-and-grid/grid9.webp)

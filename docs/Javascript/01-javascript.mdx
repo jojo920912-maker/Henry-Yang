@@ -16,7 +16,7 @@ var a = "ccccc"
 }
 console.log(a) // 輸出 ccccc
 ```
-
+![js1](/img/js/01.webp)
 
 我們透過上述程式碼的範例中，可以看到即便 `var` 變數是在 `if` 裡面的區塊被宣告的，但是他仍然可以在區塊外部看見。因為 `var` 沒有所謂的"區塊作用域"。
 
@@ -33,7 +33,7 @@ let b = "111"
 let b = "222"
 console.log(b) // 系統報錯，因為 let 不能被重複宣告
 ```
-
+![js2](/img/js/02.webp)
 
 這樣執行出來之後就會說，因為 `var` 允許重複宣告同一個變數，後面的值會蓋掉前面的，所以輸出 `banana`。
 但 `let` 不允許重複宣告，系統會直接報錯。
@@ -48,7 +48,7 @@ var a = "banana"
 
 console.log(a) // 輸出 banana
 ```
-
+![js3](/img/js/03.webp)
 
 去執行的結果，會發現系統出現 `banana`，代表 `var` 可以重複宣告，也可以重複賦予值。
 
@@ -68,7 +68,7 @@ console.log(a)
 var a = 10 // 輸出 undefined
 ```
 
-
+![js4](/img/js/04.webp)
 
 這樣撰寫，等於這樣子
 ```javascript
@@ -88,7 +88,7 @@ console.log(a)
 let a = 5
 ```
 
-
+![js5](/img/js/05.webp)
 
 
 而 `var` 的作用域規則 `=` 宣告所在的 `function`，但它不會被 `if、for、while` 的 `{}` 限制。
@@ -101,7 +101,7 @@ if (true) {
 }
 console.log(x) // 123
 ```
-
+![js6](/img/js/06.webp)
 
 但是換成 `let/const` 就會噴錯:
 
@@ -111,6 +111,7 @@ if (true) {
 }
 console.log(y) // ERROR
 ```
+![js7](/img/js/07.webp)
 
 如果用 `Function`:
 
@@ -121,6 +122,8 @@ function test() {
 
 console.log(a) // 系統報錯
 ```
+![js8](/img/js/08.webp)
+
 因為 `var` 在 `function` 裡面宣告，出了 `function` 就消失，所以外面的 `console.log(a)` 會報錯。所以只有 `function` 能限制 `var` 的範圍。
 
 那如果使用 `{}` 來做 `var`
@@ -131,6 +134,8 @@ console.log(a) // 系統報錯
 }
 console.log(z) // 輸出999
 ```
+
+![js9](/img/js/09.webp)
 
 因為 `var` 的特性是只有 `function` 能限制它的範圍，普通的 `{}` 擋不住它，所以外面還是能存取到 `z`。所以執行出來的結果 `{}` 也無法擋住 `var`。
 
@@ -150,6 +155,8 @@ let a = 222
 console.log(a) // 系統報出: a 已經被宣告了，不可以重複宣告
 ```
 
+![js10](/img/js/10.webp)
+
 因為上述程式碼已經使用 `"let a = 111"` 了，我們後面再加上 `"let a = 222"` 的程式碼去執行，系統會給出我們 `"a已經被宣告了"` 的訊息。
 
 但是我們沿用上述寫法去執行:
@@ -161,6 +168,8 @@ a = 222
 
 console.log(a) // 輸出222
 ```
+
+![js11](/img/js/11.webp)
 
 執行結果會出現 `222`，因為 `"let"` 的值可以重新賦予，但是不能重複宣告。
 
@@ -179,6 +188,8 @@ a = 222
 console.log (a) // ERROR，系統報錯誤
 ```
 
+![js12](/img/js/12.webp)
+
 輸入上述程式碼之後，系統會跟我們報錯，因為 `const` 是不變的常數，所以重新賦予值，系統會出現不能賦值的常數錯誤。
 
 
@@ -190,3 +201,5 @@ const a = 111
 
 console.log (a) // 輸出111
 ```
+
+![js13](/img/js/13.webp)

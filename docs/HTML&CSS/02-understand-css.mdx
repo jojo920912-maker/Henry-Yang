@@ -1,10 +1,11 @@
 ---
-title: "了解CSS 選擇棄權重 & 關係選擇器了解HTML tag&semantic tag及Block element and inline element"
+title: "CSS 選擇棄權重 & 關係選擇器"
 sidebar_title: "了解CSS 選擇棄權重 & 關係選擇器"
 tags: [Selecting discard weights, relation selectors]
 ---
 
-這次我們要來了解CSS 選擇棄權重 & 關係選擇器
+
+了解 CSS 選擇棄權重 & 關係選擇器:
 
 CSS 選擇棄權重是指不同 CSS 選擇器之間，哪一條規則會優先生效 的「重要性分數」。
 
@@ -19,24 +20,14 @@ p { color: blue; }
 ```
 
 HTML是:
+
 ```HTML
 <p id="title" class="text">Hello</p>
 ```
 會長像以下圖片，會先顯示綠色(因為ID的權重最高)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+![CSS.photo(1)](/img/css/01.webp)
 
 
 CSS 會依照選擇器的不同種類給不同分數：
@@ -55,6 +46,8 @@ Class / 偽類 / 屬性選擇器  10       .box, :hover, [type="text"]
 ​
 萬用選擇器                 0        *
 ```
+
+
 ```HTML
 說白一點:inline style[<p style="">]> ID[#] > class/屬性/偽類[.] > 標籤/偽元素[p, div, h1]
 ```
@@ -93,19 +86,7 @@ HTML:
 呈現出來會是這樣:
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+![CSS.photo(2)](/img/css/02.webp)
 
 
 ```HTML
@@ -134,26 +115,14 @@ HTML:
 ```
 呈現出來會是這樣:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+![CSS.photo(3)](/img/css/03.webp)
 
 ```HTML
 div 的「第一層」裡的 <p> 會中
 第二層以後的 <p> 都不會中
 ```
 
-加號：A + B，叫相鄰兄弟選擇器表示「同一層並位於後方的特定元素」，兄弟選擇器使用「~」符號分隔，~ 前後可以加上空白，加上的空白不具任何意義。
+加號：A + B，叫相鄰兄弟選擇器表示「同一層並位於後方的特定元素」，兄弟選擇器使用「`~`」符號分隔，`~` 前後可以加上空白，加上的空白不具任何意義。
 
 
 舉例CSS:
@@ -171,19 +140,7 @@ HTML:
 呈現出來會是這樣:
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+![CSS.photo(4)](/img/css/04.webp)
 
 
 ```
@@ -213,22 +170,7 @@ HTML:
 
 呈現出來會是這樣:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![CSS.photo(5)](/img/css/05.webp)
 
 
 

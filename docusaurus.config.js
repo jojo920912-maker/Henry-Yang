@@ -27,8 +27,8 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'jojo920912-maker',
+  projectName: 'Henry-Yang',
 
   onBrokenLinks: 'throw',
 
@@ -111,7 +111,7 @@ const config = {
       items: [
         {
           label: '技術筆記',
-          to: '/docs/intro',
+          to: '/docs/Environmental-status/npm-pkg',
         },
         {
           label: 'Blog',
